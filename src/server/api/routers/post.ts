@@ -8,11 +8,10 @@ import {
 
 export const postRouter = createTRPCRouter({
   hello: publicProcedure
-    .input(z.object({ text: z.string() }))
-    .query(({ input }) => {
-      return {
-        greeting: `Hello ${input.text}`,
-      };
+    .query(({ ctx, input }) => {
+      return ctx.db.asset.findFirst({
+        where: { name: "Bitcoin" },
+      });
     }),
 
   create: protectedProcedure

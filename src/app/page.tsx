@@ -1,67 +1,88 @@
-import Link from "next/link";
+"use client";
 
-import { LatestPost } from "@/app/_components/post";
-import { getServerAuthSession } from "@/server/auth";
-import { api, HydrateClient } from "@/trpc/server";
+import { useEffect, useState } from "react";
+import { io, Socket } from "socket.io-client";
 
-export default async function Home() {
-  const hello = await api.post.hello({ text: "from tRPC" });
-  const session = await getServerAuthSession();
+const socket: Socket = io("http://localhost:3000", {
+  transports: ["websocket"], // Use WebSocket explicitly
+  reconnectionAttempts: 5, // Retry up to 5 times
+});
 
-  void api.post.getLatest.prefetch();
+export default function ChatPage() {
+  const [isConnected, setIsConnected] = useState(false);
+  const [messages, setMessages] = useState<string[]>([]); // Store chat messages
+  const [input, setInput] = useState<string>(""); // For input message
+
+  useEffect(() => {
+    console.log("Attempting to connect to the server...");
+
+    socket.on("connect", () => {
+      console.log("Connected to server:", socket.id);
+      setIsConnected(true);
+    });
+
+    socket.on("disconnect", (reason) => {
+      console.log("Disconnected from server:", reason);
+      setIsConnected(false);
+    });
+
+    socket.on("message", (message: string) => {
+      console.log("Message received:", message);
+      setMessages((prevMessages) => [...prevMessages, message]);
+    });
+
+    socket.on("connect_error", (error) => {
+      console.error("Connection error:", error.message);
+    });
+
+    return () => {
+      socket.off("connect");
+      socket.off("disconnect");
+      socket.off("message");
+      socket.off("connect_error");
+    };
+  }, []);
+
+  const sendMessage = () => {
+    if (input.trim() === "") return;
+    socket.emit("message", input); // Send message to server
+    setInput(""); // Clear input
+  };
 
   return (
-    <HydrateClient>
-      <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
-        <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
-          <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
-            Create <span className="text-[hsl(280,100%,70%)]">T3</span> App
-          </h1>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
-            <Link
-              className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 hover:bg-white/20"
-              href="https://create.t3.gg/en/usage/first-steps"
-              target="_blank"
-            >
-              <h3 className="text-2xl font-bold">First Steps →</h3>
-              <div className="text-lg">
-                Just the basics - Everything you need to know to set up your
-                database and authentication.
-              </div>
-            </Link>
-            <Link
-              className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 hover:bg-white/20"
-              href="https://create.t3.gg/en/introduction"
-              target="_blank"
-            >
-              <h3 className="text-2xl font-bold">Documentation →</h3>
-              <div className="text-lg">
-                Learn more about Create T3 App, the libraries it uses, and how
-                to deploy it.
-              </div>
-            </Link>
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <p className="text-2xl text-white">
-              {hello ? hello.greeting : "Loading tRPC query..."}
-            </p>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white">
+      <h1 className="text-4xl font-bold mb-4">Chat Page</h1>
+      <p>Status: {isConnected ? "Connected" : "Disconnected"}</p>
 
-            <div className="flex flex-col items-center justify-center gap-4">
-              <p className="text-center text-2xl text-white">
-                {session && <span>Logged in as {session.user?.name}</span>}
-              </p>
-              <Link
-                href={session ? "/api/auth/signout" : "/api/auth/signin"}
-                className="rounded-full bg-white/10 px-10 py-3 font-semibold no-underline transition hover:bg-white/20"
-              >
-                {session ? "Sign out" : "Sign in"}
-              </Link>
+      <div className="w-full max-w-md bg-gray-800 p-4 rounded-lg mt-4">
+        <div
+          className="overflow-y-auto h-64 bg-gray-700 p-2 rounded-lg"
+          style={{ scrollbarWidth: "thin" }}
+        >
+          {messages.map((message, index) => (
+            <div key={index} className="mb-2">
+              {message}
             </div>
-          </div>
-
-          {session?.user && <LatestPost />}
+          ))}
         </div>
-      </main>
-    </HydrateClient>
+
+        <div className="mt-4 flex gap-2">
+          <input
+            type="text"
+            className="flex-grow px-4 py-2 rounded-lg bg-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Type your message..."
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+          />
+          <button
+            className="px-4 py-2 rounded-lg bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:ring-blue-300"
+            onClick={sendMessage}
+          >
+            Send
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }
