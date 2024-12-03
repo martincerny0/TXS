@@ -1,20 +1,20 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// This is your Prisma schema file
+// Learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-    provider  = "postgresql"
-    url       = env("DATABASE_URL")
-    directUrl = env("DIRECT_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 // Necessary for NextAuth
 model Account {
   id                       String  @id @default(cuid())
-  userId                   String
+  userId                   Int
   type                     String
   provider                 String
   providerAccountId        String
@@ -34,7 +34,7 @@ model Account {
 model Session {
   id           String   @id @default(cuid())
   sessionToken String   @unique
-  userId       String
+  userId       Int
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
@@ -47,7 +47,6 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-// Enums
 enum SubscriptionPlan {
   Beginner
   Investor
@@ -104,11 +103,11 @@ enum Investing_Experience {
 }
 
 model User {
-  id              String   @id @default(cuid())
+  id              Int      @id @default(autoincrement())
   email           String   @unique @db.VarChar(255)
-  country_code    String  @db.Char(2)
-  phone_prefix    String  @db.VarChar(10)
-  phone_number    String  @db.VarChar(20)
+  country_code    String   @db.Char(2)
+  phone_prefix    String   @db.VarChar(10)
+  phone_number    String   @db.VarChar(20)
   firstName       String   @db.VarChar(50)
   lastName        String   @db.VarChar(50)
   aiCredits       Int      @default(0)
@@ -116,7 +115,7 @@ model User {
   tag             String   @unique @db.VarChar(50)
   profileImage    String?  @db.VarChar(255)
   dateOfBirth     DateTime?
-  emailVerified  DateTime?
+  emailVerified   DateTime?
   investingReason Investing_Reason?
   investingExperience Investing_Experience?
   customerId      String?  @db.VarChar(255)
@@ -125,7 +124,6 @@ model User {
 
   accounts        Account[]
   sessions        Session[]
-
   chats1          Chat[]   @relation("ChatUser1")
   chats2          Chat[]   @relation("ChatUser2")
   messages        Message[]
@@ -144,14 +142,12 @@ model User {
   aiChats         AiChat[]
 }
 
-
-// messaging
 model Chat {
   id        Int      @id @default(autoincrement())
   user1     User     @relation("ChatUser1", fields: [user1Id], references: [id])
-  user1Id   String
+  user1Id   Int
   user2     User     @relation("ChatUser2", fields: [user2Id], references: [id])
-  user2Id   String
+  user2Id   Int
   createdAt DateTime @default(now())
   messages  Message[]
 }
@@ -161,7 +157,7 @@ model Message {
   chat      Chat     @relation(fields: [chatId], references: [id])
   chatId    Int
   sender    User     @relation(fields: [senderId], references: [id])
-  senderId  String
+  senderId  Int
   content   String   @db.Text
   createdAt DateTime @default(now())
   attachments MessageAttachment[]
@@ -176,23 +172,20 @@ model MessageAttachment {
   createdAt DateTime @default(now())
 }
 
-// subscription
 model Subscription {
   id        String           @id @default(uuid())
   plan      SubscriptionPlan
   status    SubscriptionStates
   user      User             @relation(fields: [userId], references: [id])
-  userId    String
+  userId    Int
   createdAt DateTime         @default(now())
   updatedAt DateTime         @updatedAt
 }
 
-
-// trades and assets
 model Trade {
   id         Int      @id @default(autoincrement())
   user       User     @relation(fields: [userId], references: [id])
-  userId     String
+  userId     Int
   asset      Asset    @relation(fields: [assetId], references: [id])
   assetId    Int
   type       TradeType
@@ -209,8 +202,8 @@ model Asset {
   name      String        @db.VarChar(100)
   symbol    String        @db.VarChar(10)
   category  AssetCategory
-  createdAt DateTime       @default(now())
-  updatedAt DateTime       @updatedAt
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
   trades    Trade[]
   prices    AssetPrice[]
 }
@@ -223,12 +216,10 @@ model AssetPrice {
   recordedAt DateTime @default(now())
 }
 
-
-// money movements
 model Deposit {
   id        Int      @id @default(autoincrement())
   user      User     @relation(fields: [userId], references: [id])
-  userId    String
+  userId    Int
   amount    Decimal  @db.Decimal(10, 2)
   createdAt DateTime @default(now())
 }
@@ -236,18 +227,16 @@ model Deposit {
 model Withdrawal {
   id        Int      @id @default(autoincrement())
   user      User     @relation(fields: [userId], references: [id])
-  userId    String
+  userId    Int
   amount    Decimal  @db.Decimal(10, 2)
   createdAt DateTime @default(now())
 }
 
-
-// referral code
 model ReferralCode {
   id        Int      @id @default(autoincrement())
   code      String   @unique @db.VarChar(50)
   user      User     @relation(fields: [userId], references: [id])
-  userId    String
+  userId    Int
   createdAt DateTime @default(now())
   uses      ReferralUse[]
 }
@@ -257,15 +246,14 @@ model ReferralUse {
   referralCode    ReferralCode  @relation(fields: [referralCodeId], references: [id])
   referralCodeId  Int
   user            User          @relation(fields: [userId], references: [id])
-  userId          String
+  userId          Int
   createdAt       DateTime      @default(now())
 }
 
-// posts
 model Post {
   id          Int          @id @default(autoincrement())
   user        User         @relation(fields: [userId], references: [id])
-  userId      String
+  userId      Int
   content     String       @db.Text
   createdAt   DateTime     @default(now())
   comments    Comment[]
@@ -276,7 +264,7 @@ model Post {
 model Comment {
   id              Int       @id @default(autoincrement())
   user            User      @relation(fields: [userId], references: [id])
-  userId          String
+  userId          Int
   post            Post      @relation(fields: [postId], references: [id])
   postId          Int
   replyCommentId  Int?
@@ -288,9 +276,9 @@ model Comment {
 
 model Follow {
   follower   User @relation("follower", fields: [followerId], references: [id])
-  followerId String
+  followerId Int
   followed   User @relation("following", fields: [followedId], references: [id])
-  followedId String
+  followedId Int
   createdAt  DateTime @default(now())
 
   @@id([followerId, followedId])
@@ -298,7 +286,7 @@ model Follow {
 
 model Like {
   user      User     @relation(fields: [userId], references: [id])
-  userId    String
+  userId    Int
   post      Post     @relation(fields: [postId], references: [id])
   postId    Int
   createdAt DateTime @default(now())
@@ -315,18 +303,16 @@ model PostAttachment {
   createdAt DateTime @default(now())
 }
 
-
-// articles
 model Article {
   id           Int              @id @default(autoincrement())
-  title        String            @db.VarChar(255)
+  title        String           @db.VarChar(255)
   category     ArticleCategory
   readTime     Int
-  premium      Boolean           @default(false)
-  thumbnailUrl String?           @db.VarChar(255)
-  redactor     Redactor          @relation(fields: [redactorId], references: [id])
+  premium      Boolean          @default(false)
+  thumbnailUrl String?          @db.VarChar(255)
+  redactor     Redactor         @relation(fields: [redactorId], references: [id])
   redactorId   Int
-  createdAt    DateTime          @default(now())
+  createdAt    DateTime         @default(now())
   ratings      ArticleRating[]
 }
 
@@ -334,7 +320,7 @@ model ArticleRating {
   article   Article @relation(fields: [articleId], references: [id])
   articleId Int
   user      User    @relation(fields: [userId], references: [id])
-  userId    String
+  userId    Int
   rating    Int
 
   @@id([articleId, userId])
@@ -350,11 +336,10 @@ model Redactor {
   articles  Article[]
 }
 
-// ai
 model AiChat {
   id        Int      @id @default(autoincrement())
   user      User     @relation(fields: [userId], references: [id])
-  userId    String
+  userId    Int
   title     String?  @db.VarChar(64)
   createdAt DateTime @default(now())
   requests  AiRequest[]
@@ -377,4 +362,3 @@ model AiResponse {
   content   String    @db.Text
   createdAt DateTime @default(now())
 }
-

@@ -32,11 +32,12 @@ const staticCandlestickData: CandleData[] = [
   { left: "29.86549019173292%", top: "63.02763174530138%", scale: 1.4739823001001926, opacity: 0.05819530969920446, rectY: 30, rectHeight: 43, lineY1: 16, lineY2: 61 },
   { left: "52.05099777962812%", top: "62.6622465046932%", scale: 1.2104720075436686, opacity: 0.07811683947680606, rectY: 31, rectHeight: 17, lineY1: 17, lineY2: 63 },
   { left: "78.78458181030135%", top: "61.55839748866009%", scale: 1.415129598186006, opacity: 0.09702082265363081, rectY: 28, rectHeight: 41, lineY1: 13, lineY2: 63 },
+  { left: "90.78458181030135%", top: "80.55839748866009%", scale: 1.415129598186006, opacity: 0.09702082265363081, rectY: 28, rectHeight: 41, lineY1: 13, lineY2: 63 },
 ];
 
-const CandlestickBackground = () => {
+const CandlestickBackground : React.FC = () => {
   return (
-    <div className="fixed w-full h-full overflow-hidden pointer-events-none">
+    <div className="absolute top-0 w-full h-full overflow-hidden pointer-events-none m-0">
       {staticCandlestickData.map((data, i) => (
         <svg
           key={i}

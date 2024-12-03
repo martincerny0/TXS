@@ -3,15 +3,11 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { BarChartIcon, ArrowLeftIcon, Loader2Icon, CheckCircleIcon, MailIcon, HelpCircleIcon, MailCheckIcon } from "lucide-react"
+import { ArrowLeftIcon, Loader2Icon, MailIcon, MailCheckIcon } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { useEffect } from "react"
 import { signIn } from "next-auth/react";
-import { set } from "zod";
-import Head from "next/head";
-import Image from "next/image";
 import Logo from "../_components/Logo/logo";
 import CandlestickBackground from "../_components/Candlestick_Background/Candlestick_Background";
 

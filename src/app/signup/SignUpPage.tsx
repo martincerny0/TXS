@@ -4,17 +4,14 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Switch } from "@/components/ui/switch"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { ArrowLeftIcon, Loader2Icon, CheckCircleIcon, UploadIcon } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
 import { useRouter } from 'next/navigation';
 import Image from "next/image"
-import { useEffect } from "react"
-import { useRef } from "react"
-import type { Investing_Experience, Investing_Reason } from '@prisma/client';
 import Logo from "../_components/Logo/logo"
+import CandlestickBackground from "../_components/Candlestick_Background/Candlestick_Background"
 
 
 
@@ -42,69 +39,12 @@ const Countries : Country[] = [
   { code: '+49', country: 'DE', flag: "/flags/de.webp", placeholder: '151 12345678' },
 ]
 
-type CandleData = {
-  left: string;
-  top: string;
-  scale: number;
-  opacity: number;
-  rectY: number;
-  rectHeight: number;
-  lineY1: number;
-  lineY2: number;
-};
 
-
-const generateCandlestickData = (): CandleData[] => {
-  return Array.from({ length: 50 }, () => ({
-    left: `${Math.random() * 100}%`,
-    top: `${Math.random() * 100}%`,
-    scale: 0.5 + Math.random() * 1.5,
-    opacity: 0.03 + Math.random() * 0.07,
-    rectY: 10 + Math.random() * 20,
-    rectHeight: 10 + Math.random() * 30,
-    lineY1: 5 + Math.random() * 10,
-    lineY2: 45 + Math.random() * 10,
-  }));
-};
-
-const CandlestickChart = () => {
-  const [candlestickData, setCandlestickData] = useState<CandleData[]>([]);
-
-  useEffect(() => {
-    setCandlestickData(generateCandlestickData());
-  }, []);
-
-  return (
-    <div className="fixed inset-0 w-full h-full overflow-hidden pointer-events-none">
-      {candlestickData.map((data, i) => (
-        <svg
-          key={i}
-          className="absolute"
-          style={{
-            left: data.left,
-            top: data.top,
-            transform: `scale(${data.scale})`,
-            opacity: data.opacity,
-          }}
-          width="40"
-          height="60"
-          viewBox="0 0 40 60"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <g fill="black" stroke="black" strokeWidth="1">
-            <rect x="18" y={data.rectY} width="4" height={data.rectHeight} />
-            <line x1="20" y1={data.lineY1} x2="20" y2={data.lineY2} />
-          </g>
-        </svg>
-      ))}
-    </div>
-  );
-};
 
 const SignUp: React.FC = () => {
   const router = useRouter()
 
-//   const predefinedEmail = router.query.email as string | undefined
+  // const predefinedEmail = router.query?.email?? "";
 //   const affiliateCode = router.query.affiliate as string | undefined
 
 const predefinedEmail = "";
@@ -177,7 +117,7 @@ const affiliateCode = "";
 
   return (
     <div className="relative flex min-h-screen flex-col overflow-hidden bg-gray-50 dark:bg-zinc-900">
-      <CandlestickChart />
+      <CandlestickBackground />
       <div className="container relative z-10 mx-auto flex flex-grow items-center justify-center px-4 py-8">
         <div className="relative flex w-full max-w-5xl flex-col items-center gap-8 md:flex-row">
           <Link
@@ -225,7 +165,7 @@ const affiliateCode = "";
                     <Input
                       id="name"
                       name="name"
-                      placeholder="Matej Zajicek"
+                      placeholder="Martin Cerny"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       disabled={isLoading}
@@ -237,7 +177,7 @@ const affiliateCode = "";
                     <Input
                       id="email"
                       name="email"
-                      placeholder="zajicek@example.com"
+                      placeholder="cerny@example.com"
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
@@ -402,7 +342,16 @@ const affiliateCode = "";
                 </Button>
               </div>
             </CardFooter>
-            <div className="px-8 pb-8 text-center text-sm text-muted-foreground">
+            <div className="px-8 text-center text-sm text-muted-foreground">
+            Already have an account?{" "}
+                    <Link
+                      href="/signin"
+                      className="hover:underline"
+                    >
+                      Sign-in now
+                    </Link>
+                </div>
+            <div className="px-8 pb-8 text-center text-sm text-muted-foreground mt-2">
               By clicking &quot;Create account&quot; you agree to our{" "}
               <Link
                 href="/terms-of-service"
