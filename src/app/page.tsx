@@ -11,11 +11,12 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Separator } from '@/components/ui/separator'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation';
-import Logo from './_components/Logo/logo';
+import Logo from './_components/Logo/Logo';
 import CandlestickBackground from './_components/Candlestick_Background/Candlestick_Background';
 import BackgroundIcons from './_components/Icons_Background/Icons_Background';
 import ShareButton from './_components/Share_Button/Share_Button';
 import Image from 'next/image';
+import Footer from './_components/Footer/Footer';
 
 
 
@@ -26,7 +27,7 @@ export default function Index() {
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [enteredEmail, setEnteredEmail] = useState('');
-  console.log(enteredEmail);
+
   const router = useRouter();
 
   // const post : Post = {
@@ -45,8 +46,13 @@ export default function Index() {
 
   // custom hooks or functions
 
+  
+  const handleForm = (e : React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    return router.push(`/signup?email=${enteredEmail}`);
+  }
   const redirectToSignUp = () => {
-    router.push('/signup')
+    return router.push('/signup');
   }
 
 
@@ -76,7 +82,7 @@ export default function Index() {
 
   return (
     <div className="flex min-h-[100dvh] flex-col">
-      <header className="flex h-14 items-center justify-between px-4 lg:px-6">
+      <header className="flex h-14 items-center justify-between px-4">
           <Logo height={50} width={50} className='mt-5' />
         <nav className="flex flex-1 justify-center">
           <ul className="flex space-x-4 sm:space-x-6">
@@ -91,7 +97,7 @@ export default function Index() {
             <li>
               <Link
                 className="text-sm font-medium underline-offset-4 hover:underline"
-                href="/articles"
+                href="/insights"
               >
                 Insights
               </Link>
@@ -99,15 +105,7 @@ export default function Index() {
             <li>
               <Link
                 className="text-sm font-medium underline-offset-4 hover:underline"
-                href="ai"
-              >
-                AI Assistant
-              </Link>
-            </li>
-            <li>
-              <Link
-                className="text-sm font-medium underline-offset-4 hover:underline"
-                href="assets"
+                href="#assets"
               >
                 Assets
               </Link>
@@ -115,7 +113,7 @@ export default function Index() {
             <li>
               <Link
                 className="text-sm font-medium underline-offset-4 hover:underline"
-                href="pricing"
+                href="#pricing"
               >
                 Pricing
               </Link>
@@ -270,6 +268,7 @@ export default function Index() {
         </section>
         <section className="relative flex w-full justify-center overflow-hidden bg-gray-100 py-12 dark:bg-gray-800 md:py-24 lg:py-32">
           <BackgroundIcons />
+          <div className='-mt-12' id='pricing'></div>
           <div className="container relative z-10 px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
@@ -327,7 +326,7 @@ export default function Index() {
 
               {/* Investor Plan */}
               <Card className="relative flex flex-col justify-between bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-800 dark:to-purple-800">
-                <Badge className="absolute right-0 top-0 -translate-y-1/2 translate-x-1/4 bg-yellow-400 text-yellow-900">
+                <Badge className="absolute right-0 top-0 -translate-y-1/2 translate-x-1/4 bg-yellow-400 text-yellow-900 select-none">
                   Best Value
                 </Badge>
                 <CardHeader>
@@ -806,7 +805,7 @@ export default function Index() {
                 </p>
               </div>
               <div className="w-full max-w-sm space-y-2">
-                <form action={`/signup?email=${enteredEmail}`} className="flex space-x-2">
+                <form onSubmit={handleForm} className="flex space-x-2">
                   <Input
                     className="max-w-lg flex-1"
                     placeholder="Enter your email"
@@ -829,19 +828,7 @@ export default function Index() {
           </div>
         </section>
       </main>
-      <footer className="flex w-full shrink-0 flex-col items-center gap-2 border-t px-4 py-6 sm:flex-row md:px-6">
-        <p className="text-xs text-gray-500 dark:text-gray-400">
-          © 2024 TXS Inc. All rights reserved.
-        </p>
-        <nav className="flex gap-4 sm:ml-auto sm:gap-6">
-          <Link className="text-xs underline-offset-4 hover:underline" href="#">
-            Terms of Service
-          </Link>
-          <Link className="text-xs underline-offset-4 hover:underline" href="#">
-            Privacy
-          </Link>
-        </nav>
-      </footer>
+     <Footer />
     </div>
   );
 }

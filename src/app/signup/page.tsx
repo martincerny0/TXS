@@ -1,4 +1,3 @@
-// app/signin/page.tsx
 import SignUpPage from './SignUpPage';
 
 export const metadata = {

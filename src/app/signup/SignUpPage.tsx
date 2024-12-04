@@ -5,13 +5,14 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { ArrowLeftIcon, Loader2Icon, CheckCircleIcon, UploadIcon } from "lucide-react"
+import { ArrowLeftIcon, Loader2Icon, Check, UploadIcon } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Image from "next/image"
-import Logo from "../_components/Logo/logo"
+import Logo from "../_components/Logo/Logo"
 import CandlestickBackground from "../_components/Candlestick_Background/Candlestick_Background"
+import type { Investing_Reason, Investing_Experience } from "@prisma/client"
 
 
 
@@ -29,6 +30,8 @@ type Country = {
     placeholder: string;
   };
 
+
+
   
 const Countries : Country[] = [
   { code: '+420', country: 'CZ', flag: '/flags/cz.webp', placeholder: '733 184 857' },
@@ -41,25 +44,23 @@ const Countries : Country[] = [
 
 
 
-const SignUp: React.FC = () => {
-  const router = useRouter()
+export default function SignUp () {
 
-  // const predefinedEmail = router.query?.email?? "";
-//   const affiliateCode = router.query.affiliate as string | undefined
+  // get the search params
+  const searchParams = useSearchParams();
+  const predefinedEmail = searchParams.get("email");
+  const affiliateCode = searchParams.get("affiliate");
+  const origin = searchParams.get("origin");
 
-const predefinedEmail = "";
-const affiliateCode = "";
-
-
-  // step 1
+  // basic info, 1 step
   const [email, setEmail] = useState<string>(predefinedEmail ?? "");
   const [name, setName] = useState<string>("");
   const [phone, setPhone] = useState<string>("");
   const [selectedCountry, setSelectedCountry] = useState(Countries[0]!);
 
   // step 2
-  const [investingReason, setInvestingReason] = useState("Saving_for_retirement");
-  const [experienceLevel, setExperienceLevel] = useState("beginner");
+  const [investingReason, setInvestingReason] = useState<Investing_Reason>("Saving_for_retirement");
+  const [experienceLevel, setExperienceLevel] = useState<Investing_Experience>("beginner");
 
   // step 3
   const [idImage, setIdImage] = useState<File | null>(null);
@@ -89,10 +90,7 @@ const affiliateCode = "";
   const handleSubmit = async () => {
     setIsLoading(true)
 
-    console.log(email, name, phone, selectedCountry, investingReason, experienceLevel, idImage)
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 3000)
+    console.log(email, name, phone, selectedCountry, investingReason, experienceLevel, idImage);
   }
 
   const handleCountryChange = (value: string) => {
@@ -135,15 +133,15 @@ const affiliateCode = "";
             </p>
             <ul className="space-y-4">
               <li className="flex items-center">
-                <CheckCircleIcon className="mr-2 h-6 w-6 text-primary" />
+                <Check className="mr-2 h-6 w-6 text-primary" />
                 <span>Real-time Market Data</span>
               </li>
               <li className="flex items-center">
-                <CheckCircleIcon className="mr-2 h-6 w-6 text-primary" />
+                <Check className="mr-2 h-6 w-6 text-primary" />
                 <span>Collaborative Investment Community</span>
               </li>
               <li className="flex items-center">
-                <CheckCircleIcon className="mr-2 h-6 w-6 text-primary" />
+                <Check className="mr-2 h-6 w-6 text-primary" />
                 <span>Secure and user-friendly platform</span>
               </li>
             </ul>
@@ -236,17 +234,17 @@ const affiliateCode = "";
                     </Label>
                     <RadioGroup defaultValue="retirement">
                       <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="retirement" id="retirement" />
+                        <RadioGroupItem value="retirement" id="retirement" onClick={() => setInvestingReason("Saving_for_retirement")} />
                         <Label htmlFor="retirement">
                           Saving for retirement
                         </Label>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="wealth" id="wealth" />
+                        <RadioGroupItem value="wealth" id="wealth" onClick={() => setInvestingReason("Building_wealth")} />
                         <Label htmlFor="wealth">Building wealth</Label>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="income" id="income" />
+                        <RadioGroupItem value="income" id="income" onClick={() => setInvestingReason("Generating_income")}/>
                         <Label htmlFor="income">Generating income</Label>
                       </div>
                       <div className="flex items-center space-x-2">
@@ -257,7 +255,7 @@ const affiliateCode = "";
                   </div>
                   <div className="space-y-2">
                     <Label>Indicate Your Level of Investing Experience</Label>
-                    <Select name="experience" defaultValue="beginner">
+                    <Select name="experience" defaultValue="beginner" onValueChange={(e : Investing_Experience) => setExperienceLevel(e)}>
                       <SelectTrigger id="experience">
                         <SelectValue placeholder="Select your experience level" />
                       </SelectTrigger>
@@ -268,7 +266,7 @@ const affiliateCode = "";
                         <SelectItem value="intermediate">
                           I have some experience
                         </SelectItem>
-                        <SelectItem value="advanced">
+                        <SelectItem value="expert">
                           I&apos;m an experienced investor
                         </SelectItem>
                       </SelectContent>
@@ -342,6 +340,7 @@ const affiliateCode = "";
                 </Button>
               </div>
             </CardFooter>
+            {currentStep === 0 && (
             <div className="px-8 text-center text-sm text-muted-foreground">
             Already have an account?{" "}
                     <Link
@@ -351,7 +350,8 @@ const affiliateCode = "";
                       Sign-in now
                     </Link>
                 </div>
-            <div className="px-8 pb-8 text-center text-sm text-muted-foreground mt-2">
+            )};
+            <div className={`px-8 pb-8 text-center text-sm text-muted-foreground ${currentStep === 0 && "mt-2"}`}>
               By clicking &quot;Create account&quot; you agree to our{" "}
               <Link
                 href="/terms-of-service"
@@ -374,5 +374,3 @@ const affiliateCode = "";
     </div>
   );
 }
-
-export default SignUp
