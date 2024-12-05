@@ -84,7 +84,7 @@ export default function Index() {
     <div className="flex min-h-[100dvh] flex-col">
       <header className="flex h-14 items-center justify-between px-4">
           <Logo height={50} width={50} className='mt-5' />
-        <nav className="flex flex-1 justify-center">
+        <nav className="flex flex-1 justify-center ml-20">
           <ul className="flex space-x-4 sm:space-x-6">
             <li>
               <Link

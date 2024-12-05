@@ -1,11 +1,9 @@
 
 import React from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import Link from "next/link"
-import Logo from '../_components/Logo/Logo'
 import { Separator } from "@/components/ui/separator"
 import Footer from '../_components/Footer/Footer'
-import RedirectButton from '../_components/Redirect_Button/Redirect_Button'
+import SecondaryNav from '../_components/Secondary_Nav/Secondary_Nav'
 
 const terms = [
     { title: "Information We Collect", content: "We collect various types of information from our users to provide and improve our services:", list : [
@@ -15,49 +13,13 @@ const terms = [
       "Usage Data: Information on how you interact with our platform, including log data and device information.",
     ]},
   ];
+  
 export default function PrivacyPolicy() {
 
   return (
     <div className="flex min-h-screen flex-col">
       {/* nav */}
-      <header className="flex h-14 items-center justify-between px-4 lg:px-6">
-        <Logo height={50} width={50} className="mt-5" />
-        <nav className="flex flex-1 justify-center">
-          <ul className="ml-24 flex space-x-4 sm:space-x-6">
-            <li>
-              <Link
-                className="text-sm font-medium underline-offset-4 hover:underline"
-                href="/"
-              >
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link
-                className="text-sm font-medium underline-offset-4 hover:underline"
-                href="/feed"
-              >
-                Feed
-              </Link>
-            </li>
-            <li>
-              <Link
-                className="text-sm font-medium underline-offset-4 hover:underline"
-                href="/insights"
-              >
-                Insights
-              </Link>
-            </li>
-          </ul>
-        </nav>
-        {/* sign in / up buttons */}
-        <RedirectButton href='/signin' variant="outline" className="m-2">
-          Sign In
-        </RedirectButton>
-        <RedirectButton href='/signup' variant="default" className="m-2">
-          Sign Up
-        </RedirectButton>
-      </header>
+    <SecondaryNav/>
       <main className="flex-1 py-12">
         <div className="container mx-auto px-4">
           {/* main container */}

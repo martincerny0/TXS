@@ -1,11 +1,9 @@
 "use client"
 import React from 'react'
-import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import Link from "next/link"
-import Logo from '../_components/Logo/Logo'
 import { Separator } from "@/components/ui/separator"
 import Footer from '../_components/Footer/Footer'
+import SecondaryNav from '../_components/Secondary_Nav/Secondary_Nav'
 
 const terms = [
     { title: "Acceptance of Terms", content: "By accessing or using the TXS platform, you agree to be bound by these Terms of Service and all applicable laws and regulations. If you do not agree with any part of these terms, you may not use our services." },
@@ -15,44 +13,7 @@ export default function TermsOfService() {
   return (
     <div className="flex min-h-screen flex-col">
       {/* nav */}
-      <header className="flex h-14 items-center justify-between px-4 lg:px-6">
-        <Logo height={50} width={50} className="mt-5" />
-        <nav className="flex flex-1 justify-center">
-          <ul className="flex space-x-4 sm:space-x-6 ml-24">
-            <li>
-              <Link
-                className="text-sm font-medium underline-offset-4 hover:underline"
-                href="/"
-              >
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link
-                className="text-sm font-medium underline-offset-4 hover:underline"
-                href="/feed"
-              >
-                Feed
-              </Link>
-            </li>
-            <li>
-              <Link
-                className="text-sm font-medium underline-offset-4 hover:underline"
-                href="/insights"
-              >
-                Insights
-              </Link>
-            </li>
-          </ul>
-        </nav>
-        {/* sign in / up buttons */}
-        <Button variant="outline" className="m-2">
-          Sign In
-        </Button>
-        <Button variant="default" className="m-2">
-          Sign Up
-        </Button>
-      </header>
+      <SecondaryNav/>
       <main className="flex-1 py-12">
         <div className="container mx-auto px-4">
           {/* main container */}
