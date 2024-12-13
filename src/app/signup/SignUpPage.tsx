@@ -114,7 +114,7 @@ export default function SignUp () {
   }
 
   return (
-    <div className="relative flex min-h-screen flex-col overflow-hidden bg-gray-50 dark:bg-zinc-900">
+    <div className="relative flex min-h-screen flex-col overflow-hidden bg-gray-50">
       <CandlestickBackground />
       <div className="container relative z-10 mx-auto flex flex-grow items-center justify-center px-4 py-8">
         <div className="relative flex w-full max-w-5xl flex-col items-center gap-8 md:flex-row">
@@ -127,7 +127,7 @@ export default function SignUp () {
             Back
           </Link>
           <div className="flex flex-col justify-center bg-gray-50 md:w-1/2">
-            <Logo height={40} width={40} className="w-20 h-20"/>
+            <Logo height={40} width={40} className="h-20 w-20" />
             <p className="mb-6 text-xl text-gray-600">
               Join our community of investors and unlock these features:
             </p>
@@ -183,7 +183,7 @@ export default function SignUp () {
                       required
                     />
                   </div>
-                  
+
                   <div className="space-y-2">
                     <Label htmlFor="phone">Phone Number</Label>
                     <div className="flex">
@@ -234,17 +234,33 @@ export default function SignUp () {
                     </Label>
                     <RadioGroup defaultValue="retirement">
                       <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="retirement" id="retirement" onClick={() => setInvestingReason("Saving_for_retirement")} />
+                        <RadioGroupItem
+                          value="retirement"
+                          id="retirement"
+                          onClick={() =>
+                            setInvestingReason("Saving_for_retirement")
+                          }
+                        />
                         <Label htmlFor="retirement">
                           Saving for retirement
                         </Label>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="wealth" id="wealth" onClick={() => setInvestingReason("Building_wealth")} />
+                        <RadioGroupItem
+                          value="wealth"
+                          id="wealth"
+                          onClick={() => setInvestingReason("Building_wealth")}
+                        />
                         <Label htmlFor="wealth">Building wealth</Label>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="income" id="income" onClick={() => setInvestingReason("Generating_income")}/>
+                        <RadioGroupItem
+                          value="income"
+                          id="income"
+                          onClick={() =>
+                            setInvestingReason("Generating_income")
+                          }
+                        />
                         <Label htmlFor="income">Generating income</Label>
                       </div>
                       <div className="flex items-center space-x-2">
@@ -255,7 +271,13 @@ export default function SignUp () {
                   </div>
                   <div className="space-y-2">
                     <Label>Indicate Your Level of Investing Experience</Label>
-                    <Select name="experience" defaultValue="beginner" onValueChange={(e : Investing_Experience) => setExperienceLevel(e)}>
+                    <Select
+                      name="experience"
+                      defaultValue="beginner"
+                      onValueChange={(e: Investing_Experience) =>
+                        setExperienceLevel(e)
+                      }
+                    >
                       <SelectTrigger id="experience">
                         <SelectValue placeholder="Select your experience level" />
                       </SelectTrigger>
@@ -280,21 +302,31 @@ export default function SignUp () {
                   <div className="flex w-full items-center justify-center">
                     <label
                       htmlFor="id-upload"
-                      className="dark:hover:bg-bray-800 flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+                      className="flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100"
                     >
-                      {preview ? (<>
-                        <Image src={preview} alt="Preview" className="h-64 w-full" width={80} height={70} />
-                      </>) : (
-                      <div className="flex flex-col items-center justify-center pb-6 pt-5">
-                        <UploadIcon className="mb-4 h-8 w-8 text-gray-500 dark:text-gray-400" />
-                        <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                          <span className="font-semibold">Click to upload</span>{" "}
-                          or drag and drop
-                        </p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                          SVG, PNG, JPG or GIF (MAX. 800x400px)
-                        </p>
-                      </div>
+                      {preview ? (
+                        <>
+                          <Image
+                            src={preview}
+                            alt="Preview"
+                            className="h-64 w-full"
+                            width={80}
+                            height={70}
+                          />
+                        </>
+                      ) : (
+                        <div className="flex flex-col items-center justify-center pb-6 pt-5">
+                          <UploadIcon className="mb-4 h-8 w-8 text-gray-500" />
+                          <p className="mb-2 text-sm text-gray-500">
+                            <span className="font-semibold">
+                              Click to upload
+                            </span>{" "}
+                            or drag and drop
+                          </p>
+                          <p className="text-xs text-gray-500">
+                            SVG, PNG, JPG or GIF (MAX. 800x400px)
+                          </p>
+                        </div>
                       )}
                       <input
                         id="id-upload"
@@ -303,7 +335,6 @@ export default function SignUp () {
                         accept="image/*"
                         onChange={handleIdUpload}
                       />
-
                     </label>
                   </div>
                 </div>
@@ -323,7 +354,8 @@ export default function SignUp () {
                 <Button
                   className={currentStep === 0 ? "w-full" : ""}
                   onClick={handleNextStep}
-                  disabled={isLoading ||
+                  disabled={
+                    isLoading ||
                     (currentStep === 0 && (!name || !email || !phone))
                   }
                 >
@@ -341,17 +373,17 @@ export default function SignUp () {
               </div>
             </CardFooter>
             {currentStep === 0 && (
-            <div className="px-8 text-center text-sm text-muted-foreground">
-            Already have an account?{" "}
-                    <Link
-                      href="/signin"
-                      className="hover:underline"
-                    >
-                      Sign-in now
-                    </Link>
-                </div>
-            )};
-            <div className={`px-8 pb-8 text-center text-sm text-muted-foreground ${currentStep === 0 && "mt-2"}`}>
+              <div className="px-8 text-center text-sm text-muted-foreground">
+                Already have an account?{" "}
+                <Link href="/signin" className="hover:underline">
+                  Sign-in now
+                </Link>
+              </div>
+            )}
+            
+            <div
+              className={`px-8 pb-8 text-center text-sm text-muted-foreground ${currentStep === 0 && "mt-2"}`}
+            >
               By clicking &quot;Create account&quot; you agree to our{" "}
               <Link
                 href="/terms-of-service"
