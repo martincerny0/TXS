@@ -184,12 +184,6 @@ const SocialSection : React.FC = () => {
                                   </p>
                                   <p className="text-lg">$146.50</p>
                                 </div>
-                                <div>
-                                  <p className="text-sm font-medium text-muted-foreground">
-                                    Volume
-                                  </p>
-                                  <p className="text-lg">32.4M</p>
-                                </div>
                               </div>
                             </div>
                           </div>

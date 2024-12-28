@@ -2,8 +2,10 @@ import React from "react";
 import Link from "next/link";
 import Logo from "../Logo/Logo";
 import RedirectButton from "../Redirect_Button/Redirect_Button";
+import ScrollToButton from "../ScrollToButton/ScrollToButton";
 
 const PrimaryNav : React.FC = () => {
+
     return (
       <header className="flex h-14 items-center justify-between px-4">
         <Logo height={50} width={50} className="mt-5" />
@@ -34,12 +36,7 @@ const PrimaryNav : React.FC = () => {
               </Link>
             </li>
             <li>
-              <Link
-                className="text-sm font-medium underline-offset-4 hover:underline"
-                href="#pricing"
-              >
-                Pricing
-              </Link>
+              <ScrollToButton/>
             </li>
           </ul>
         </nav>

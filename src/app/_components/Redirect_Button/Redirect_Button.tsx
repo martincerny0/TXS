@@ -9,13 +9,14 @@ interface RedirectButtonProps {
     children?: React.ReactNode;
     type?: "submit" | "reset" | "button" | undefined;
     variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link" | null | undefined;
+    size?: "default" | "sm" | "lg" | "icon";
 }
 
-const RedirectButton : React.FC<RedirectButtonProps> = ({ className, children, href, type, variant }) => {
+const RedirectButton : React.FC<RedirectButtonProps> = ({ className, children, href, type, variant, size }) => {
     const router = useRouter();
     
     return (
-        <Button type={type} variant={variant} onClick={() => router.push(href)} className={className}>
+        <Button type={type} variant={variant} size={size} onClick={() => router.push(href)} className={className}>
             {children}
         </Button>
     );

@@ -95,7 +95,7 @@ const PricingSection: React.FC = () => {
                 </li>
                 <li className="flex items-center">
                   <CheckIcon className="mr-2 h-5 w-5 text-green-500" />
-                  <span>700 requests/month</span>
+                  <span>700 AI requests/month</span>
                 </li>
                 <li className="flex items-center">
                   <XIcon className="mr-2 h-5 w-5 text-red-500" />
@@ -128,7 +128,7 @@ const PricingSection: React.FC = () => {
               <ul className="space-y-2">
                 <li className="flex items-center">
                   <CheckIcon className="mr-2 h-5 w-5 text-green-500" />
-                  <span>3-minute timeframes</span>
+                  <span>1-minute timeframes</span>
                 </li>
                 <li className="flex items-center">
                   <CheckIcon className="mr-2 h-5 w-5 text-green-500" />
@@ -140,7 +140,7 @@ const PricingSection: React.FC = () => {
                 </li>
                 <li className="flex items-center">
                   <CheckIcon className="mr-2 h-5 w-5 text-green-500" />
-                  <span>2000 requests/month</span>
+                  <span>2000 AI requests/month</span>
                 </li>
                 <li className="flex items-center">
                   <CheckIcon className="mr-2 h-5 w-5 text-green-500" />

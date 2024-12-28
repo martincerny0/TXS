@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import CandlestickBackground from "../Candlestick_Background/Candlestick_Background";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
+import RedirectButton from "../Redirect_Button/Redirect_Button";
 
 const HeroSection: React.FC = () => {
   return (
@@ -16,20 +17,22 @@ const HeroSection: React.FC = () => {
             <h1 className="bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-3xl font-bold tracking-tighter text-transparent sm:text-4xl md:text-5xl lg:text-6xl/none">
               Trade, Exchange & Share
             </h1>
-            <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl">
-              Join a platform where trading, socializing, and sharing your winnings come together seamlessly.
+            <p className="mx-auto max-w-[700px] text-gray-500">
+              Join a platform where trading, socializing, and sharing your
+              winnings come together seamlessly.
             </p>
           </div>
           <div className="flex flex-col space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
-            <Button
+            <RedirectButton
+              href="/signup"
               size="lg"
               className="transform rounded-lg bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 px-6 py-3 font-semibold text-white shadow-lg transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-xl"
             >
               Get Started
-            </Button>
-            <Button variant="outline" size="lg">
+            </RedirectButton>
+            <RedirectButton href="/about" variant="outline" size="lg">
               Learn More
-            </Button>
+            </RedirectButton>
           </div>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Badge variant="secondary" className="text-sm">

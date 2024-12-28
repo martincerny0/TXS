@@ -6,7 +6,7 @@ import RedirectButton from "../Redirect_Button/Redirect_Button";
 const SecondaryNav : React.FC = () => {
     return (
         <header className="flex h-14 items-center justify-between px-4 lg:px-6">
-        <Logo height={50} width={50} className="mt-5" />
+        <Logo height={50} width={50} className="mt-2" />
         <nav className="flex flex-1 justify-center">
           <ul className="ml-24 flex space-x-4 sm:space-x-6">
             <li>
@@ -23,6 +23,14 @@ const SecondaryNav : React.FC = () => {
                 href="/feed"
               >
                 Feed
+              </Link>
+            </li>
+            <li>
+              <Link
+                className="text-sm font-medium underline-offset-4 hover:underline"
+                href="/chart"
+              >
+                Chart
               </Link>
             </li>
             <li>

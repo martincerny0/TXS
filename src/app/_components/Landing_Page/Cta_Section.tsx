@@ -16,7 +16,7 @@ const CtaSection : React.FC = () => {
   };
 
   return (
-    <section className="flex w-full justify-center bg-gray-200 py-12 md:py-24 lg:py-32">
+    <section className="flex w-full justify-center bg-gray-50 py-12 md:py-24 lg:py-32">
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">

@@ -1,19 +1,48 @@
 import Footer from "../_components/Footer/Footer";
 import SecondaryNav from "../_components/Secondary_Nav/Secondary_Nav";
 import CandlestickBackground from "../_components/Candlestick_Background/Candlestick_Background";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { BarChart2, PenTool, TrendingUp } from "lucide-react";
+import { Card, CardContent, CardHeader} from "@/components/ui/card"
 
-import { TrendingUpIcon } from "lucide-react";
+import { ChartCandlestick, Sparkles, Users, Newspaper, ChartPie, BadgeDollarSign } from "lucide-react";
 
 const features = [
-    { icon: TrendingUpIcon, title: "Advanced Trading", description: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Totam eaque beatae non voluptatum nulla magni rem quo voluptatibus vel porro" },
-    { icon: TrendingUpIcon, title: "AI Analytics", description: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Totam eaque beatae non voluptatum nulla magni rem quo voluptatibus vel porro" },
-    { icon: TrendingUpIcon, title: "Social Trading", description: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Totam eaque beatae non voluptatum nulla magni rem quo voluptatibus vel porro" },
-    { icon: TrendingUpIcon, title: "Insights", description: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Totam eaque beatae non voluptatum nulla magni rem quo voluptatibus vel porro" },
-    { icon: TrendingUpIcon, title: "Portfolio", description: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Totam eaque beatae non voluptatum nulla magni rem quo voluptatibus vel porro" },
-    { icon: TrendingUpIcon, title: "Assets", description: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Totam eaque beatae non voluptatum nulla magni rem quo voluptatibus vel porro" },
-  ]
+  {
+    icon: ChartCandlestick,
+    title: "Advanced Trading",
+    description:
+      "Stay ahead in the market with sophisticated trading tools that help you make informed decisions.",
+  },
+  {
+    icon: Sparkles,
+    title: "AI Assistant",
+    description:
+      "Powered by ChatGPT-4, our AI tool helps you with trading strategy. Get in-depth portfolio analysis, predictive insights, and more!",
+  },
+  {
+    icon: Users,
+    title: "Social Trading",
+    description:
+      "Connect with other traders, share strategies, discuss market trends and learn from the community.",
+  },
+  {
+    icon: Newspaper,
+    title: "Insights",
+    description:
+      "Stay updated with latest market news and trends, access premium insights with our subscription plans.",
+  },
+  {
+    icon: ChartPie,
+    title: "Portfolio",
+    description:
+      "Manage your investments, track your performance or analyze your winnings and losses.",
+  },
+  {
+    icon: BadgeDollarSign,
+    title: "Assets",
+    description:
+      "Chose from wide range of assets, including stocks, crypto and indexes. Explore new investment opportunities.",
+  },
+];
 
 export default function About() {
 
@@ -39,7 +68,7 @@ export default function About() {
                   className="flex flex-col items-center text-center"
                 >
                   <CardHeader>
-                    <feature.icon className="mb-4 h-12 w-12 text-primary" />
+                    <feature.icon className="h-12 w-12 text-primary" />
                   </CardHeader>
                   <CardContent>
                     <h3 className="mb-2 text-lg font-bold">{feature.title}</h3>
@@ -52,62 +81,9 @@ export default function About() {
             </div>
           </div>
         </section>
-        {/* ai assistant */}
-        <section className="flex justify-center">
-          <div>
-            <h2 className="mb-12 text-center text-3xl font-bold text-gray-900">
-              *****Use our advanced AI assistant!
-            </h2>
-            <div className="space-y-16">
-              <div className="flex flex-col items-start gap-8 md:flex-row md:items-center">
-                <div className="flex-shrink-0">
-                  <TrendingUp className="h-16 w-16 text-gray-600" />
-                </div>
-                <div>
-                  <h3 className="mb-4 text-2xl font-semibold text-gray-800">
-                    Market Prediction
-                  </h3>
-                  <div className="space-y-2 text-gray-600">
-                    <p>
-                      AI analyzes historical data and current market conditions
-                      to help you make best trading decisions
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="flex flex-col items-start gap-8 md:flex-row md:items-center">
-                <div className="flex-shrink-0">
-                  <BarChart2 className="h-16 w-16 text-gray-600" />
-                </div>
-                <div>
-                  <h3 className="mb-4 text-2xl font-semibold text-gray-800">
-                    Portfolio Analysis
-                  </h3>
-                  <div className="space-y-2 text-gray-600">
-                    <p>
-                      AI examines your asset allocation and performance along
-                      with personalized recommendations
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="flex flex-col items-start gap-8 md:flex-row md:items-center">
-              <div className="flex-shrink-0">
-                <PenTool className="h-16 w-16 text-gray-600" />
-              </div>
-              <div>
-                <h3 className="mb-4 text-2xl font-semibold text-gray-800">
-                  Content Creation
-                </h3>
-                <div className="space-y-2 text-gray-600">
-                  <p>AI generates tailored content based on your input</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+        <div className="lg:mt-64">
         <Footer />
+        </div>
       </div>
     );
 }

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { BookOpenIcon, LockIcon, NewspaperIcon, StarIcon } from "lucide-react";
+import RedirectButton from "../Redirect_Button/Redirect_Button";
 
 
 
@@ -23,10 +24,10 @@ return (
             trends, predictions, and strategies to maximize your investments.
           </p>
           <div className="flex flex-col gap-2 min-[400px]:flex-row">
-            <Button className="inline-flex items-center justify-center">
+            <RedirectButton href="/insights" className="inline-flex items-center justify-center">
               <NewspaperIcon className="mr-2 h-4 w-4" />
               Read Latest Articles
-            </Button>
+            </RedirectButton>
           </div>
         </div>
         <div className="grid gap-4 md:grid-cols-2">
