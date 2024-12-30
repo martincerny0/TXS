@@ -11,7 +11,7 @@ import CtaSection from './_components/Landing_Page/Cta_Section';
 export default function Index() {
 
   return (
-    <div className="flex min-h-[100dvh] flex-col">
+    <div className="flex flex-col">
       <PrimaryNav />
       <main className="flex-1">
         <HeroSection />
