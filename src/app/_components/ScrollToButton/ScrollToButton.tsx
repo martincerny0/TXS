@@ -2,20 +2,26 @@
 import React from "react";
 import Link from "next/link";
 
-const ScrollToButton: React.FC = () => {
+interface ScrollToButtonProps {
+  className?: string;
+  href: string;
+  children?: React.ReactNode;
+}
+
+const ScrollToButton: React.FC<ScrollToButtonProps> = ({className, href, children}) => {
   return (
     <Link
-      className="text-sm font-medium underline-offset-4 hover:underline"
-      href="#pricing"
+    className={className}	
+    href={href}
       scroll={false}
       onClick={(e) => {
         e.preventDefault();
         document
-          .querySelector("#pricing")
+          .querySelector(href)
           ?.scrollIntoView({ behavior: "smooth" });
       }}
     >
-      Pricing
+      {children}
     </Link>
   );
 };

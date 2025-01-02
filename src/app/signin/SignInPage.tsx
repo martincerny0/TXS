@@ -11,17 +11,32 @@ import { signIn } from "next-auth/react";
 import Logo from "../_components/Logo/Logo";
 import CandlestickBackground from "../_components/Candlestick_Background/Candlestick_Background";
 
+const emailRegEx = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,32}$/;
+
+interface UserData {
+  email: {
+    email: string,
+    isValid: boolean,
+  }
+}
+
 export default function SignIn() {
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [email, setEmail] = useState<string>("");
+  const [userData, setUserData] = useState<UserData>({
+    email: {
+      email: "",
+      isValid: false,
+    }
+  });
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
+    const { email } = userData.email;
     await signIn("email", { email, redirect: false });
 
     setIsSubmitted(true);
@@ -67,10 +82,10 @@ export default function SignIn() {
                       <Input
                         id="email"
                         name="email"
-                        placeholder="zajicek@example.com"
+                        placeholder="cerny@example.com"
                         type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        value={userData.email.email}
+                        onChange={(e) => setUserData({email : { email: e.target.value, isValid: emailRegEx.test(e.target.value) }})}
                         autoCapitalize="none"
                         autoComplete="email"
                         autoCorrect="off"
@@ -79,7 +94,7 @@ export default function SignIn() {
                     </div>
                   </CardContent>
                   <CardFooter className="flex flex-col space-y-4">
-                    <Button type="submit" className="w-full" disabled={isLoading || !email}>
+                    <Button type="submit" className="w-full" disabled={isLoading || !userData.email.isValid}>
                       {isLoading ? (
                         <>
                           <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />
@@ -95,7 +110,7 @@ export default function SignIn() {
                     {!isSubmitted && (
                       <div className="px-8 text-center text-sm text-muted-foreground">
                         Don&apos;t have an account?{" "}
-                        <Link href="/signup" className="text-primary hover:underline">
+                        <Link href={`signup?origin=signin`} className="hover:underline">
                           Sign-up now
                         </Link>
                       </div>
@@ -108,7 +123,7 @@ export default function SignIn() {
                     <MailCheckIcon className="mx-auto h-12 w-12 text-gray-500" />
                     <p className="mt-2 text-xl font-semibold">Check your email</p>
                     <p className="mt-2 text-sm">
-                      We&apos;ve sent a sign-in link to <strong>{email}</strong>. Click the link in the email to access your account.
+                      We&apos;ve sent a sign-in link to <strong>{userData.email.email}</strong>. Click the link in the email to access your account.
                     </p>
                     <Button className="w-full mt-5" onClick={() => router.push("/")}>
                       Go Home

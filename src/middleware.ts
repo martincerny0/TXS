@@ -5,7 +5,7 @@ export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // const signedIn = !!request.cookies.get('authToken');
-  const signedIn = true;
+  const signedIn = false;
 
   // if not signedin, redirect to signin page
   if (pathname.startsWith('/account') && !signedIn) {
