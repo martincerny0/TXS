@@ -1,7 +1,7 @@
 import InsightPage from "./InsightPage";
 
 export const metadata = {
-  title: "Insight  | TXS ",
+  title: "Insight | TXS ",
 };
 
 export default function Page({ params }: { params: { id: string } }) {

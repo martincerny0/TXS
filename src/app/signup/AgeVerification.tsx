@@ -16,7 +16,7 @@ import {
   ThumbsDown,
 } from "lucide-react";
 import Link from "next/link";
-import type UserData from "../types/userData";
+import type UserData from "@/types/userData";
 
 interface AgeVerificationProps {
   handleRegistration: () => void;

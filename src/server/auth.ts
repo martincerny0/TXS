@@ -38,6 +38,9 @@ declare module "next-auth" {
  * @see https://next-auth.js.org/configuration/options
  */
 export const authOptions: NextAuthOptions = {
+  session: {
+    strategy:"database",
+  },
   callbacks: {
     session: ({ session, user }) => ({
       ...session,
@@ -45,9 +48,11 @@ export const authOptions: NextAuthOptions = {
         ...session.user,
         id: user.id,
       },
+      
     }),
   },
   adapter: PrismaAdapter(db) as Adapter,
+  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     EmailProvider({
       server: {

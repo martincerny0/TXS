@@ -12,52 +12,52 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
-import type UserData from "../types/userData"
-import type Country from "../types/country";
+import type UserData from "@/types/userData"
+import type Country from "@/types/country";
 
 
-
+const imageBasePath = "image/flag";
 
 const Countries: Country[] = [
   {
     code: "+420",
     country: "CZ",
-    flag: "/flags/cz.webp",
+    flag: imageBasePath + "/cz.webp",
     placeholder: "733 184 857",
     regEx: /^[0-9]{9}$/,
   },
   {
     code: "+1",
     country: "US",
-    flag: "/flags/us.webp",
+    flag: imageBasePath + "/us.webp",
     placeholder: "(555) 555-1234",
     regEx: /^\([0-9]{3}\)[0-9]{3}-[0-9]{4}$/, 
   },
   {
     code: "+380",
     country: "UA",
-    flag: "/flags/ua.webp",
+    flag: imageBasePath + "/ua.webp",
     placeholder: "67 123 45 67",
     regEx: /^[0-9]{9}$/, 
   },
   {
     code: "+33",
     country: "FR",
-    flag: "/flags/fr.webp",
+    flag: imageBasePath + "/fr.webp",
     placeholder: "06 12 34 56 78",
     regEx: /^[0-9]{10}$/, 
   },
   {
     code: "+421",
     country: "SK",
-    flag: "/flags/sk.webp",
+    flag: imageBasePath + "/sk.webp",
     placeholder: "902 123 456",
     regEx: /^[0-9]{9}$/, 
   },
   {
     code: "+49",
     country: "DE",
-    flag: "/flags/de.webp",
+    flag: imageBasePath + "/de.webp",
     placeholder: "151 12345678",
     regEx: /^[0-9]{11,12}$/, 
   },

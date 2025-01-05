@@ -7,9 +7,6 @@ import { headers } from "next/headers";
 
 const PrimaryNav: React.FC = () => {
   const headersList = headers();
-  const fullUrl = headersList.get("referer") ?? "";
-  const url = new URL(fullUrl);
-  const path = url.pathname;
 
   return (
     <header className="flex h-14 items-center justify-between px-4">
@@ -51,7 +48,7 @@ const PrimaryNav: React.FC = () => {
         </ul>
       </nav>
       <RedirectButton
-        href={`/signup?origin=${path}`}
+        href={`/signup?origin=${headersList.get("x-pathname")}`}
         className="text-sm font-medium underline-offset-4 hover:underline"
         variant="outline"
       >

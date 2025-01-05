@@ -1,3 +1,5 @@
+"use client";
+import React from 'react';
 import { Settings, MessageSquare, Crown } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { useState } from 'react'
@@ -5,7 +7,7 @@ import FollowModal from '../_components/Follow_Modal/Follow_Modal'
 import UserAvatar from '../_components/User_Avatar/User_Avatar'
 
 
-export default function HeaderSection() {
+const HeaderSection : React.FC = () => {
   const [isFollowersModalOpen, setIsFollowersModalOpen] = useState(false);
   const [isFollowingModalOpen, setIsFollowingModalOpen] = useState(false);
 
@@ -89,3 +91,5 @@ export default function HeaderSection() {
     </section>
   );
 }
+
+export default HeaderSection;

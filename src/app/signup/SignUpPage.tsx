@@ -8,7 +8,7 @@ import CandlestickBackground from "../_components/Candlestick_Background/Candles
 import BasicDetails from "./BasicDetails";
 import InvestmentProfile from "./InvestmentProfile";
 import AgeVerification from "./AgeVerification";
-import type UserData from "../types/userData";
+import type UserData from "@/types/userData";
 
 export default function SignUp() {
 

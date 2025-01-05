@@ -19,7 +19,7 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import Link from "next/link";
 import type { InvestingExperience } from "@prisma/client";
-import type UserData from "../types/userData";
+import type UserData from "@/types/userData";
 
 interface InvestmentProfileProps {
   userData: UserData;

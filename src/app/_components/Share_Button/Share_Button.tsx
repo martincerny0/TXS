@@ -34,11 +34,11 @@ const ShareButton: React.FC<ShareButtonProps> = ({targetRoute, type}) => {
 
         switch (platform) {
             case "x":
-              shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)+ " https://txs.com" + encodeURIComponent(targetRoute)}`;
+              shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)+ " https://my-txs.cz" + encodeURIComponent(targetRoute)}`;
               break;
       
             case "whatsapp":
-              shareUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)+ " https://txs.com" + encodeURIComponent(targetRoute)}`;
+              shareUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)+ " https://my-txs.cz" + encodeURIComponent(targetRoute)}`;
               break;
         }
 
@@ -63,9 +63,9 @@ const ShareButton: React.FC<ShareButtonProps> = ({targetRoute, type}) => {
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Share this post</DialogTitle>
+            <DialogTitle>Share this {type}</DialogTitle>
             <DialogDescription>
-              Choose how you want to share this post
+              Choose how you want to share this {type}.
             </DialogDescription>
           </DialogHeader>
           <div className="mt-4 flex flex-col space-y-4">

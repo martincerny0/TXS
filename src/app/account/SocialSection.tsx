@@ -1,7 +1,8 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { ThumbsUp, MessageSquare, Clock } from 'lucide-react'
+import React from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ThumbsUp, MessageSquare, Clock } from "lucide-react";
 
-export default function SocialSection() {
+const SocialSection: React.FC = () => {
   // testing posts data
   const latestPosts = [
     {
@@ -92,3 +93,5 @@ export default function SocialSection() {
     </section>
   );
 };
+
+export default SocialSection;
