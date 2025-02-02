@@ -1,48 +1,49 @@
 "use client";
-import React from 'react';
-import { Settings, MessageSquare, Crown } from 'lucide-react'
-import { Button } from "@/components/ui/button"
-import { useState } from 'react'
-import FollowModal from '../_components/Follow_Modal/Follow_Modal'
-import UserAvatar from '../_components/User_Avatar/User_Avatar'
+import React, { useEffect } from "react";
+import { Settings, MessageSquare, Crown } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import UserAvatar from "../_components/MainElements/User_Avatar/User_Avatar";
+import FollowModal from "../_components/Social/Follow_Modal/Follow_Modal";
+import { type AccountFollower, type AccountUser } from "@/types/user";
+import RedirectButton from "../_components/Redirect/Redirect_Button/Redirect_Button";
 
+interface HeaderSectionProps {
+  user?: AccountUser;
+}
 
-const HeaderSection : React.FC = () => {
+const HeaderSection: React.FC<HeaderSectionProps> = ({ user }) => {
   const [isFollowersModalOpen, setIsFollowersModalOpen] = useState(false);
   const [isFollowingModalOpen, setIsFollowingModalOpen] = useState(false);
 
   const openFollowersModal = () => setIsFollowersModalOpen(true);
   const openFollowingModal = () => setIsFollowingModalOpen(true);
 
-  const isSubscribed = false;
-  const bio =
-    "lorem ipsum dolor sit amet, consectetur adipiscing elit. lorem ipsum dolor sit amet, consectetur adi";
+  const [followers, setFollowers] = useState<AccountFollower[]>([]);
+  const [following, setFollowing] = useState<AccountFollower[]>([]);
 
-  // testing users data
-  const users = [
-    { id: 1, name: "martin", avatarUrl: "", isFollowing: true },
-    { id: 2, name: "cerny", avatarUrl: "", isFollowing: false },
-    { id: 3, name: "martinsnsnsn", avatarUrl: "", isFollowing: true },
-  ];
+  useEffect(() => {
+    if (user?.followers) setFollowers(user.followers);
+    if (user?.following) setFollowing(user.following);
+  }, [user]);
 
-  const user = {
-    name: "Martin Cerny",
-    id:58484848,
-  };
+  if (!user?.name) return null;
 
   return (
     <section className="mb-8 flex flex-col space-y-4 md:flex-row md:items-center md:justify-between md:space-y-0">
       <div className="flex items-start space-x-4">
-        <UserAvatar name={user.name} userId={user.id} />
+        <UserAvatar classname="h-20 w-20" user={user}  />
         <div>
           <div className="flex items-center space-x-2">
-            <h1 className="text-2xl font-bold">Martin Cerny</h1>
-            {isSubscribed && <Crown className="h-5 w-5 text-yellow-400" />}
+            <h1 className="text-2xl font-bold">{user.name}</h1>
+            {user.isSubscribed && <Crown className="h-5 w-5 text-yellow-400" />}
           </div>
-          <p className="text-gray-500">@martincerny</p>
-          <p className="mt-1 text-sm text-gray-500">Member since: Dec 2024</p>
+          <p className="text-gray-500">@{user.tag}</p>
+          <p className="mt-1 text-sm text-gray-500">
+            Member since: {user.createdAt.toDateString()}
+          </p>
           <div className="relative mt-2 w-80">
-            <p className="text-sm text-gray-700">{bio}</p>
+            <p className="text-sm text-gray-700">{user.bio}</p>
           </div>
         </div>
       </div>
@@ -66,30 +67,30 @@ const HeaderSection : React.FC = () => {
         >
           567 following
         </Button>
-        <Button variant="outline">
+        <RedirectButton href="/settings" variant="outline">
           <Settings className="mr-2 h-4 w-4" />
           Settings
-        </Button>
-        <Button variant="default">
+        </RedirectButton>
+        <RedirectButton href="/chat" variant="default">
           <MessageSquare className="mr-2 h-4 w-4" />
           Message
-        </Button>
+        </RedirectButton>
       </div>
       <FollowModal
         isOpen={isFollowersModalOpen}
         onClose={() => setIsFollowersModalOpen(false)}
         title="Followers"
-        users={users}
+        followUser={followers}
       />
 
       <FollowModal
         isOpen={isFollowingModalOpen}
         onClose={() => setIsFollowingModalOpen(false)}
         title="Following"
-        users={users}
+        followUser={following}
       />
     </section>
   );
-}
+};
 
 export default HeaderSection;

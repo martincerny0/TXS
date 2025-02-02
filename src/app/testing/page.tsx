@@ -3,6 +3,10 @@
 import { useEffect, useState } from "react";
 import { io} from "socket.io-client";
 import type { Socket } from "socket.io-client";
+import Logo from "../_components/MainElements/Logo/Logo";
+import { Button } from "@/components/ui/button";
+import { Loader2Icon } from "lucide-react";
+import Chart from "../chart/[id]/Chart";
 
 const socket: Socket = io("http://localhost:3000", {
   transports: ["websocket"], // Use WebSocket explicitly
@@ -10,6 +14,7 @@ const socket: Socket = io("http://localhost:3000", {
 });
 
 export default function ChatPage() {
+  
   const [isConnected, setIsConnected] = useState(false);
   const [messages, setMessages] = useState<string[]>([]); // Store chat messages
   const [input, setInput] = useState<string>(""); // For input message
@@ -43,6 +48,7 @@ export default function ChatPage() {
       socket.off("connect_error");
     };
   }, []);
+
 
   const sendMessage = () => {
     if (input.trim() === "") return;

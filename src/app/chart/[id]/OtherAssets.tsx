@@ -1,22 +1,39 @@
-import React from "react";
-import type { Asset } from "@/types/asset";
-import AssetCard from "@/app/_components/Asset_Card/Asset_Card";
+"use client";
+import React, { useEffect } from "react";
+import type { Asset, AssetCategory } from "@/types/asset";
+import AssetCard from "@/app/_components/Asset/Asset_Card/Asset_Card";
+import { api } from "@/trpc/react";
+import { useRouter } from "next/navigation";
+import AssetCardSkeleton from "@/app/_components/Asset/Asset_Card/Asset_Card_Skeleton";
+import type { User } from "next-auth";
 
-const mockAssets: [Asset, Asset, Asset, Asset] = [
-  { id: 1, name: "Bitcoin", symbol: "BTC", category: "crypto", price: 187.54 },
-  { id: 2, name: "Ethereum", symbol: "ETH", category: "crypto", price: 187.54 },
-  { id: 3, name: "Litecoin", symbol: "LTC", category: "crypto", price: 0 },
-  { id: 4, name: "Apple Inc", symbol: "AAPL", category: "stock", price: 187.54 },
-];
+interface OtherAssetsProps {
+  assetCategory: AssetCategory;
+  AssetId: number;
+  user: User | undefined;
+}
 
-const OtherAssets: React.FC = () => {
+const OtherAssets: React.FC<OtherAssetsProps> = ({assetCategory, AssetId, user}) => {
+
+  const router = useRouter();
+  const { data : assetsData, isLoading } = api.asset.getAssetsByCategory.useQuery({ assetCategory: assetCategory , quantity: 4, selectedAssetId : AssetId });
+  const [assets, setAssets] = React.useState<Asset[]>();
+
+  useEffect(() => {
+    if (assetsData) {
+      setAssets(assetsData);
+    }
+  }, [assetsData]);
   return (
     <div className="border-t border-gray-200 bg-white p-4 px-20 dark:border-gray-700 dark:bg-gray-800">
       <h2 className="mb-4 text-xl font-bold">Other Assets</h2>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {mockAssets.map((asset) => (
-          <AssetCard key={asset.id} asset={asset} />
-        ))}
+        {isLoading ? (
+          Array.from({length: 3 }).map((_, index) => <AssetCardSkeleton key={index} />)
+        ) : (
+          assets?.map((asset) => <AssetCard key={asset.id} user={user} asset={asset} router={router} />)
+        )
+        }
       </div>
     </div>
   );

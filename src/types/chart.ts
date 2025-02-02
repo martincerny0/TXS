@@ -1,7 +1,24 @@
 import type { Asset } from "./asset";
 
-export type ChartTool = "cursor" | "text" | "draw" | "zoom" | "move" | "trendline";
-export type ChartTimeFrame = "1m" | "5m" | "15m" | "30m" | "1h" | "4h" | "1D" | "1W" | "1M" | "3M" | "1Y";
+export type ChartTool = "cursor" | "paint" | "text" | "pan" | "trendline";
+export type ChartTimeFrame = "1m" | "3m" | "5m" | "15m" | "1h" | "4h" | "1D" ;
+
+export const timeframes : ChartTimeFrame[] = ['1m', '3m', '5m', '15m',  '1h', '4h', '1D' ];
+
+export interface Painting {
+    x: number;
+    y: number;
+  }
+
+export  interface Trendline {
+    start: { x: number; y: number };
+    end: { x: number; y: number };
+  }
+  
+ export interface TrendlinePoint {
+    x: number;
+    y: number;
+  }
 
 export interface ChartText {
     text: string;
@@ -47,5 +64,14 @@ export interface Chart {
         takeProfit: number;
         stopLoss: number;
     };
+    createdAt?: Date;
+}
+
+export interface ChartCandlestick {
+    date: Date | null;
+    high: number;
+    low: number;
+    open: number;
+    close: number;
 }
 

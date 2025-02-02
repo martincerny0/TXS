@@ -1,6 +1,6 @@
 "use client";
 import React from 'react';
-import StarRating  from '@/app/_components/Star_Rating/Star_Rating'
+import StarRating  from '@/app/_components/Insight/Star_Rating/Star_Rating'
 
 interface UserRatingProps {
     initialRating: number;

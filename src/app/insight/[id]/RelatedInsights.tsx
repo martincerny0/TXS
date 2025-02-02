@@ -1,6 +1,7 @@
-import InsightCard from '@/app/_components/Insight_Card/Insight_Card';
+import InsightCard from '@/app/_components/Insight/Insight_Card/Insight_Card';
 import React from 'react';
 import type { InsightsCategory, InsightsTag } from '@prisma/client';
+import type { User } from 'next-auth';
 
 
 interface InsightProps {
@@ -15,7 +16,10 @@ interface InsightProps {
   rating: number;
 }
 
-const RelatedInsights : React.FC = () => {
+interface RelatedInsightsProps {
+  user: User | undefined;
+}
+const RelatedInsights : React.FC<RelatedInsightsProps> = ({ user }) => {
 
     // testing insights
   const mockInsights: InsightProps[] = [
@@ -74,7 +78,7 @@ const RelatedInsights : React.FC = () => {
         <h3 className="mb-6 text-2xl font-bold">Related Articles</h3>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {mockInsights.slice(0,3).map((insight, index) => (
-            <InsightCard key={index} insight={insight} />
+            <InsightCard key={index} user={user} insight={insight} />
           ))}
         </div>
       </section>

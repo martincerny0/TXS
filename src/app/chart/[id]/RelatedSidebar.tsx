@@ -1,69 +1,76 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Users, Newspaper } from "lucide-react";
-import SocialPostCard from "@/app/_components/SocialPost_Card/SocialPost_Card";
-import type { Post } from '@/types/post';
+import SocialPostCard from "@/app/_components/Social/SocialPost_Card/SocialPost_Card";
+import type { Post } from "@/types/post";
 import type { InsightShort } from "@/types/insight";
-import InsightCard from "@/app/_components/Insight_Card/Insight_Card";
-import InsightShortCard from "@/app/_components/InsightShort_Card/InsightShort_Card";
+import InsightShortCard from "@/app/_components/Insight/InsightShort_Card/InsightShort_Card";
 
 // Mock data
-const mockSocialFeed : [Post, Post, Post] = [
-  { 
+const mockSocialFeed: [Post, Post, Post] = [
+  {
     id: 1,
     user: {
-      id: 1,
+      id: 3,
       name: "JohnDoe",
       tag: "@johndoe",
+      email: "laka@fhf.cz",
+      isNotification: true,
+      isSubscribed: true,
     },
     content: "Just bought some $AAPL, feeling bullish!",
-    createdAt: new Date(),
-    
+    createdAt: new Date("2021-10-01T12:00:00"),
   },
   {
     id: 2,
     user: {
-      id: 2,
+      id: 5,
       name: "CryptoKing",
       tag: "@cryptoking",
+      email: "laka@fhf.cz",
+      isNotification: true,
+      isSubscribed: true,
     },
-    content: "What do you think about the recent $TSLA dip?",
-    createdAt: new Date(),
+    content:
+      "🚨 Never gonna give you up, never gonna let you down. Wait… why are you singing? 😏",
+    createdAt: new Date("2021-10-01T12:00:00"),
   },
   {
     id: 3,
     user: {
-      id: 3,
+      id: 6,
       name: "StocksGuru",
       tag: "@stocksguru",
+      email: "laka@fhf.cz",
+      isNotification: true,
+      isSubscribed: true,
     },
     content: "$GOOGL looking strong after the latest earnings report.",
-    createdAt: new Date(),
+    createdAt: new Date("2021-10-01T12:00:00"),
   },
 ];
 
-const mockLatestInsights : [InsightShort, InsightShort, InsightShort] = [
+const mockLatestInsights: [InsightShort, InsightShort, InsightShort] = [
   {
     id: 1,
     title: "Market Rally Continues",
     description: "Stocks continue to climb as investors remain optimistic.",
     isPremium: true,
-    createdAt: new Date(),
+    createdAt: new Date("2021-10-01T12:00:00"),
   },
   {
     id: 2,
     title: "Fed Announces Rate Decision",
     description: "Interest rates remain unchanged in latest meeting.",
     isPremium: false,
-    createdAt: new Date(),
+    createdAt: new Date("2021-10-01T12:00:00"),
   },
   {
     id: 3,
     title: "Earnings Season Kicks Off",
     description: "Big banks report mixed results to start the quarter.",
     isPremium: false,
-    createdAt: new Date(),
+    createdAt: new Date("2021-10-01T12:00:00"),
   },
 ];
 
@@ -96,7 +103,7 @@ const RelatedSidebar: React.FC = () => {
         {isSocial ? (
           <div className="space-y-4">
             {mockSocialFeed.map((post) => (
-             <SocialPostCard key={post.id} post={post} />
+              <SocialPostCard key={post.id} post={post} />
             ))}
           </div>
         ) : (

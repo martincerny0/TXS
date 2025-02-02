@@ -1,14 +1,12 @@
-import type { Asset } from "@/types/asset";
+import type { TradeAsset } from "@/types/asset";
 
-export type TradeType = "buy" | "sell";
+export type TradeType = "Buy" | "Sell";
 
 export interface OpenTrade {
   id: number;
-  asset: Asset;
+  asset: TradeAsset;
   type: TradeType;
   quantity: number;
-  entryPrice: number;
-  currentPrice: number;
   takeProfit: number | null;
   stopLoss: number | null;
   profit: number | null;

@@ -75,7 +75,7 @@ enum InvestingExperience {
 model User {
   id                   Int             @id @default(autoincrement())
   email                String          @unique @db.VarChar(255)
-  country_code    String   @db.Char(2)
+  country_abbrev    String   @db.Char(2)
   phone_prefix    String   @db.VarChar(10)
   phone_number    String   @db.VarChar(20)
   name       String   @db.VarChar(50)
@@ -83,9 +83,10 @@ model User {
   aiCredits            Int             @default(0)
   balance              Decimal         @default(0.00) @db.Decimal(10, 2)
   tag                  String          @unique @db.VarChar(50)
-  dateOfBirth          DateTime?
+  dateOfBirth          DateTime
   emailVerified        DateTime?
   isTradeNotification  Boolean         @default(true)
+  isSubscribed        Boolean         @default(false)
   investingReason      InvestingReason?
   investingExperience  InvestingExperience?
   customerId           String?         @db.VarChar(255)
@@ -180,13 +181,13 @@ model Trade {
   asset      Asset    @relation(fields: [assetId], references: [id])
   assetId    Int
   type       TradeType
-  amount     Decimal  @db.Decimal(10, 2)
-  price      Decimal  @db.Decimal(10, 2)
+  quantity     Decimal  @db.Decimal(10, 2) @default(0.1)
   stopLoss   Decimal? @db.Decimal(10, 2)
   takeProfit Decimal? @db.Decimal(10, 2)
   isActive     Boolean  @default(true)
   createdAt  DateTime @default(now())
   closedAt   DateTime?
+  private    Boolean  @default(true)
 }
 
 model Asset {
@@ -198,6 +199,7 @@ model Asset {
   updatedAt DateTime      @updatedAt
   trades    Trade[]
   prices    AssetPrice[]
+  charts    Chart[]
 }
 
 model AssetPrice {
@@ -361,10 +363,15 @@ model Chart {
   id                Int      @id @default(autoincrement())
   user              User     @relation(fields: [userId], references: [id])
   userId            Int
-  paintings         Json
-  trendlines        Json
-  texts             Json
+  paintings         Json?
+  paintingsColor    String   @db.VarChar(7) @default("#0f8507") // hex of the color
+  trendlines        Json?
+  trendlinesColor    String   @db.VarChar(7) @default("#c90e0e") // hex of the color
+  texts             Json?
+  textsColor        String   @db.VarChar(7) @default("#3b86ff") // hex of the color
   selectedTimeframe String   @db.VarChar(50)
+  asset      Asset    @relation(fields: [assetId], references: [id])
+  assetId    Int    
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
 }

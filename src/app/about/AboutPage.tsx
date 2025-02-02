@@ -1,9 +1,11 @@
-import Footer from "../_components/Footer/Footer";
-import SecondaryNav from "../_components/Secondary_Nav/Secondary_Nav";
-import CandlestickBackground from "../_components/Candlestick_Background/Candlestick_Background";
+import Footer from "../_components/MainElements/Footer/Footer";
+import CandlestickBackground from "../_components/Background/Candlestick_Background/Candlestick_Background";
 import { Card, CardContent, CardHeader} from "@/components/ui/card"
 
 import { ChartCandlestick, Sparkles, Users, Newspaper, ChartPie, BadgeDollarSign } from "lucide-react";
+import ServerNav from "../_components/MainElements/Main_Nav/MainNav";
+import { User } from "next-auth";
+
 
 const features = [
   {
@@ -44,11 +46,14 @@ const features = [
   },
 ];
 
-export default function About() {
+interface AboutPageProps {
+  user: User | undefined;
+}
+const AboutPage: React.FC<AboutPageProps> = ({user}) => {
 
     return (
       <div>
-        <SecondaryNav />
+        <ServerNav user={user} />
         <section className="relative flex w-full justify-center overflow-hidden bg-gradient-to-b from-white to-gray-100 py-24">
           <CandlestickBackground />
           <h1 className="bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-5xl font-bold tracking-tighter text-transparent">
@@ -87,3 +92,5 @@ export default function About() {
       </div>
     );
 }
+
+export default AboutPage;

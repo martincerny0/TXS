@@ -1,8 +1,9 @@
 import React from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
-import Footer from '../_components/Footer/Footer'
-import SecondaryNav from '../_components/Secondary_Nav/Secondary_Nav'
+import Footer from '../_components/MainElements/Footer/Footer'
+import ServerNav from '../_components/MainElements/Main_Nav/MainNav'
+import { User } from 'next-auth'
 
 const terms = [
   {
@@ -80,13 +81,16 @@ const terms = [
   }
 ]
 
-  
-export default function PrivacyPolicy() {
+  interface PrivacyPolicyProps {
+    user: User | undefined
+  }
+
+const PrivacyPolicy : React.FC<PrivacyPolicyProps> = ({ user }) => {
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="container mx-auto">
       {/* nav */}
-      <SecondaryNav/>
+      <ServerNav user={user} />
       <main className="flex-1 py-12">
         <div className="container mx-auto px-4">
           {/* main container */}
@@ -137,3 +141,5 @@ export default function PrivacyPolicy() {
     </div>
   );
 }
+
+export default PrivacyPolicy

@@ -1,10 +1,8 @@
+import type { User } from "next-auth";
+
 export interface Post {
     id: number;
-      user: {
-          id: number;
-          name: string;
-          tag: string;
-      },
+      user: User;
       content: string;
       createdAt: Date;
   }

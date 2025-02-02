@@ -5,11 +5,10 @@ import {
   type NextAuthOptions,
 } from "next-auth";
 import { type Adapter } from "next-auth/adapters";
-import EmailProvider  from "next-auth/providers/email";
+import EmailProvider from "next-auth/providers/email";
 
 import { env } from "@/env";
 import { db } from "@/server/db";
-import { pages } from "next/dist/build/templates/app-page";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -18,18 +17,27 @@ import { pages } from "next/dist/build/templates/app-page";
  * @see https://next-auth.js.org/getting-started/typescript#module-augmentation
  */
 declare module "next-auth" {
-  interface Session extends DefaultSession {
+  export interface Session extends Omit<DefaultSession, "user"> {
     user: {
-      id: string;
-      // ...other properties
-      // role: UserRole;
-    } & DefaultSession["user"];
+      id: number;
+      name: string; 
+      email: string; 
+      tag: string; 
+      isSubscribed: boolean; 
+      isNotification: boolean;
+    };
   }
 
-  // interface User {
-  //   // ...other properties
-  //   // role: UserRole;
-  // }
+  export interface User {
+    id: number;
+    name: string;
+    email: string;
+    tag: string;
+    isSubscribed: boolean;
+    isNotification: boolean;
+    country_abbrev: string;
+    bio: string;
+  }
 }
 
 /**
@@ -39,17 +47,24 @@ declare module "next-auth" {
  */
 export const authOptions: NextAuthOptions = {
   session: {
-    strategy:"database",
+    strategy: "database",
   },
   callbacks: {
-    session: ({ session, user }) => ({
-      ...session,
-      user: {
-        ...session.user,
-        id: user.id,
-      },
-      
-    }),
+    async session({ session, user }) {
+      return {
+        ...session,
+        user: {
+          id: user.id,
+          name: user.name, 
+          email: user.email, 
+          tag: user.tag,
+          isSubscribed: user.isSubscribed,
+          isNotification: user.isNotification,
+          country_abbrev: user.country_abbrev,
+          bio: user.bio,
+        },
+      };
+    },
   },
   adapter: PrismaAdapter(db) as Adapter,
   secret: process.env.NEXTAUTH_SECRET,
@@ -57,27 +72,18 @@ export const authOptions: NextAuthOptions = {
     EmailProvider({
       server: {
         host: process.env.EMAIL_SERVER_HOST,
-        port: process.env.EMAIL_SERVER_PORT,
+        port: Number(process.env.EMAIL_SERVER_PORT),
         auth: {
           user: process.env.EMAIL_SERVER_USER,
-          pass: process.env.EMAIL_SERVER_PASSWORD
-        }
+          pass: process.env.EMAIL_SERVER_PASSWORD,
+        },
       },
-      from: process.env.EMAIL_FROM
+      from: process.env.EMAIL_FROM,
     }),
-    
-    /**
-     * ...add more providers here.
-     *
-     * Most other providers require a bit more work than the Discord provider. For example, the
-     * GitHub provider requires you to add the `refresh_token_expires_in` field to the Account
-     * model. Refer to the NextAuth.js docs for the provider you want to use. Example:
-     *
-     * @see https://next-auth.js.org/providers/github
-     */
   ],
   pages: {
     signIn: "/signin",
+    signOut: "/signout",
   },
 };
 

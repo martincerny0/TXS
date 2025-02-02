@@ -23,12 +23,9 @@ import { useRouter } from "next/navigation";
 import type { ClosedTrade } from "@/types/trade";
 
 const FinancialSection: React.FC = () => {
-  const [isYearlyReturn, setIsYearlyReturn] = useState(false);
 
   const router = useRouter();
 
-  const monthlyReturn = 5.2;
-  const yearlyReturn = 18.7;
 
   // testing trades
   const trades: ClosedTrade[] = [
@@ -72,7 +69,6 @@ const FinancialSection: React.FC = () => {
           </Button>
         </Link>
       </div>
-      <div className="grid gap-4 md:grid-cols-2">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Value</CardTitle>
@@ -81,52 +77,15 @@ const FinancialSection: React.FC = () => {
           <CardContent>
             <div className="mb-2 text-2xl font-bold">$12584.58</div>
             <div className="flex space-x-2">
-              <Button variant="outline" size="sm" className="flex-1">
+              <Button variant="outline" size="sm">
                 <HandCoins className="mr-1 h-4 w-4" /> Withdraw
               </Button>
-              <Button variant="default" size="sm" className="flex-1">
+              <Button variant="default" size="sm" className="w-1/4">
                 <Landmark className="mr-1 h-4 w-4" /> Deposit
               </Button>
             </div>
           </CardContent>
         </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              {isYearlyReturn ? "Yearly" : "Monthly"} Return
-            </CardTitle>
-            <Activity className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="flex flex-col items-center">
-              <div
-                className={`mb-2 text-4xl font-bold ${(isYearlyReturn ? yearlyReturn : monthlyReturn) >= 0 ? "text-green-500" : "text-red-500"}`}
-              >
-                {(isYearlyReturn ? yearlyReturn : monthlyReturn) >= 0
-                  ? "+"
-                  : "-"}
-                {Math.abs(
-                  isYearlyReturn ? yearlyReturn : monthlyReturn,
-                ).toFixed(1)}
-                %
-              </div>
-              <div className="flex items-center space-x-2">
-                <Label htmlFor="return-toggle" className="text-sm">
-                  Monthly
-                </Label>
-                <Switch
-                  id="return-toggle"
-                  checked={isYearlyReturn}
-                  onCheckedChange={setIsYearlyReturn}
-                />
-                <Label htmlFor="return-toggle" className="text-sm">
-                  Yearly
-                </Label>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
       <Card className="mt-4">
         <CardHeader>
           <CardTitle>Recent Trades</CardTitle>

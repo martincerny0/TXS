@@ -3,12 +3,12 @@ import { ArrowLeftIcon,  Check } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
-import Logo from "../_components/Logo/Logo";
-import CandlestickBackground from "../_components/Candlestick_Background/Candlestick_Background";
+import Logo from "../_components/MainElements/Logo/Logo";
+import CandlestickBackground from "../_components/Background/Candlestick_Background/Candlestick_Background";
 import BasicDetails from "./BasicDetails";
 import InvestmentProfile from "./InvestmentProfile";
 import AgeVerification from "./AgeVerification";
-import type UserData from "@/types/userData";
+import type { UserData } from "@/types/user";
 
 export default function SignUp() {
 

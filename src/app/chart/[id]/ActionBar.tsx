@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -22,82 +23,68 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Share2, BarChart2, Camera, Copy, X } from "lucide-react";
+import { Search, Share2, Camera, Copy} from "lucide-react";
 import Image from "next/image";
 import { useToast } from "@/hooks/use-toast";
 import type { ChartTimeFrame, Chart } from "@/types/chart";
+import { api } from "@/trpc/react";
+import type { Asset } from "@/types/asset";
+import { timeframes } from "@/types/chart";
 
-type Asset = {
-  symbol: string;
-  name: string;
-  price: number;
-  logo: string;
-};
 
-const popularAssets: Asset[] = [
-  {
-    symbol: "AAPL",
-    name: "Apple Inc.",
-    price: 150.25,
-    logo: "/placeholder.svg?height=32&width=32",
-  },
-  {
-    symbol: "GOOGL",
-    name: "Alphabet Inc.",
-    price: 2750.1,
-    logo: "/placeholder.svg?height=32&width=32",
-  },
-];
 
-const timeframes: ChartTimeFrame[] = [
-  "1m",
-  "5m",
-  "15m",
-  "30m",
-  "1h",
-  "4h",
-  "1D",
-  "1W",
-  "1M",
-  "3M",
-  "1Y",
-];
 
 interface ActionBarProps {
   selectedChart: Chart;
   setSelectedChart: (chart: Chart) => void;
+  changeSelectedAsset: (assetId: number) => void;
 }
 
-const ActionBar: React.FC<ActionBarProps> = ({ selectedChart, setSelectedChart}) => {
+const ActionBar: React.FC<ActionBarProps> = ({ selectedChart, setSelectedChart, changeSelectedAsset}) => {
+  
+  const { data: assetsData } = api.asset.getAllAssets.useQuery();
 
+  useEffect(() => {
+    if (assetsData) {
+      setAssets(assetsData);
+      setFilteredAssets(assetsData);
+    }
+  }, [assetsData]);
+
+  const [assets, setAssets] = useState<Asset[]>([]);
   const [isAssetModalOpen, setIsAssetModalOpen] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
-  const [filteredAssets, setFilteredAssets] = useState<Asset[]>(popularAssets);
+  const [filteredAssets, setFilteredAssets] = useState<Asset[]>(assets);
   const [searchTerm, setSearchTerm] = useState("");
   const { toast } = useToast();
-  const url = "https://my-txs.cz";
+  
+  // get url from env
+  const url = process.env.NEXT_PUBLIC_URL;
 
+
+  // filter assets
   const filterAssets = (e : string) => {
     setSearchTerm(e);
-    setFilteredAssets(popularAssets.filter((asset) =>
+    setFilteredAssets(assets.filter((asset) =>
       asset.symbol.toLowerCase().includes(e.toLowerCase()) || (asset.name.toLowerCase().includes(e.toLowerCase()))
     ));
-  }
+  } 
 
+  // screenshot the page
   const takeScreenshot = () => {
     console.log("Taking screenshot");
   };
-
+  
   const handleShare = (platform: string) => {
     let shareUrl = "";
 
     switch (platform) {
       case "x":
-        shareUrl = `https://twitter.com/intent/tweet?text=Hey, open ${selectedChart.asset.symbol} in TXS Chart!+ https://my-txs.cz/chart?share=${selectedChart.asset.symbol}`;
+        shareUrl = `https://twitter.com/intent/tweet?text=Hey, open ${selectedChart.asset.symbol} in TXS Chart!+ https://my-txs.cz/assets?share=${selectedChart.asset.symbol}`;
         break;
 
       case "whatsapp":
-        shareUrl = `https://api.whatsapp.com/send?text=Hey, open ${selectedChart.asset.symbol} in TXS Chart!+  https://my-txs.cz/chart?share=${selectedChart.asset.symbol}`;
+        shareUrl = `https://api.whatsapp.com/send?text=Hey, open ${selectedChart.asset.symbol} in TXS Chart!+  https://my-txs.cz/assets?share=${selectedChart.asset.symbol}`;
         break;
     }
 
@@ -105,7 +92,7 @@ const ActionBar: React.FC<ActionBarProps> = ({ selectedChart, setSelectedChart})
   };
 
   const handleCopy = async () => {
-    await navigator.clipboard.writeText(`${url}/chart?share=${selectedChart.asset.symbol}`);
+    await navigator.clipboard.writeText(`${url}/assets?share=${selectedChart.asset.symbol}`);
     toast({
       title: "Link copied!",
       description: "The link has been copied to your clipboard.",
@@ -116,7 +103,7 @@ const ActionBar: React.FC<ActionBarProps> = ({ selectedChart, setSelectedChart})
     <div className="flex items-center justify-between border-b border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800">
       <div className="flex items-center space-x-4">
         <Dialog open={isAssetModalOpen} onOpenChange={setIsAssetModalOpen}>
-          <DialogTrigger asChild>
+          <DialogTrigger>
             <Button variant="outline">
               {selectedChart.asset.name}
               <Search className="ml-2 h-4 w-4" />
@@ -139,25 +126,30 @@ const ActionBar: React.FC<ActionBarProps> = ({ selectedChart, setSelectedChart})
                   onChange={(e) => filterAssets(e.target.value)}
                 />
               </div>
-              <div className="grid gap-2">
+              <div className="flex flex-col space-y-2 min-h-80 max-h-96 overflow-y-scroll">
                 {filteredAssets.map((asset) => (
                   <Button
+                  
                     key={asset.symbol}
                     variant="outline"
                     className="justify-start"
                     onClick={() => {
                       setIsAssetModalOpen(false);
+                      changeSelectedAsset(asset.id);
                     }}
                   >
                     <Image
-                      src={asset.logo}
+                      src={`/image/asset/${asset.symbol.toLowerCase()}.webp`}
                       alt={asset.name}
-                      width={24}
-                      height={24}
+                      width={20}
+                      height={20}
                       className="mr-2 rounded-full"
                     />
                     <span>
                       {asset.symbol} - {asset.name}
+                    </span>
+                    <span className="text-muted-foreground text-xs justify-end w-full flex">
+                      {asset.category}
                     </span>
                   </Button>
                 ))}
@@ -182,24 +174,11 @@ const ActionBar: React.FC<ActionBarProps> = ({ selectedChart, setSelectedChart})
             ))}
           </SelectContent>
         </Select>
-        {/* <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button variant="outline" size="sm">
-                <BarChart2 className="mr-2 h-4 w-4" />
-                Indicators
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Add Indicators</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider> */}
       </div>
       <div className="flex items-center space-x-2">
         <TooltipProvider>
           <Tooltip>
-            <TooltipTrigger asChild>
+            <TooltipTrigger>
               <Button variant="outline" size="sm" onClick={takeScreenshot}>
                 <Camera className="mr-2 h-4 w-4" />
                 Snapshot
@@ -212,12 +191,12 @@ const ActionBar: React.FC<ActionBarProps> = ({ selectedChart, setSelectedChart})
         </TooltipProvider>
         <TooltipProvider>
           <Tooltip>
-            <TooltipTrigger asChild>
+            <TooltipTrigger>
               <Dialog
                 open={isShareModalOpen}
                 onOpenChange={setIsShareModalOpen}
               >
-                <DialogTrigger asChild>
+                <DialogTrigger>
                   <Button variant="outline" size="sm">
                     <Share2 className="mr-2 h-4 w-4" />
                     Share
@@ -232,8 +211,8 @@ const ActionBar: React.FC<ActionBarProps> = ({ selectedChart, setSelectedChart})
                   </DialogHeader>
                   <div className="mt-4 flex flex-col space-y-4">
                     <div className="flex items-center space-x-2">
-                      <Input value={`${url}/chart?share=${selectedChart.asset.symbol}`} readOnly />
-                      <Button variant="outline" size="sm" onClick={handleCopy}>
+                      <Input value={`${url}/assets?share=${selectedChart.asset.symbol}`} readOnly />
+                      <Button  variant="outline" size="sm" onClick={handleCopy}>
                         <Copy className="mr-2 h-4 w-4" />
                         Copy
                       </Button>
@@ -246,6 +225,7 @@ const ActionBar: React.FC<ActionBarProps> = ({ selectedChart, setSelectedChart})
                       Share on X
                     </Button>
                     <Button
+                  
                       variant="outline"
                       onClick={() => handleShare("whatsapp")}
                     >

@@ -8,8 +8,8 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
-import Logo from "../_components/Logo/Logo";
-import CandlestickBackground from "../_components/Candlestick_Background/Candlestick_Background";
+import Logo from "../_components/MainElements/Logo/Logo";
+import CandlestickBackground from "../_components/Background/Candlestick_Background/Candlestick_Background";
 
 const emailRegEx = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,32}$/;
 
@@ -120,7 +120,7 @@ export default function SignIn() {
               ) : (
                 <CardContent className="space-y-4 mt-8">
                   <div className="text-center">
-                    <MailCheckIcon className="mx-auto h-12 w-12 text-gray-500" />
+                    <MailCheckIcon className="mx-auto h-12 w-12 text-slate-900" />
                     <p className="mt-2 text-xl font-semibold">Check your email</p>
                     <p className="mt-2 text-sm">
                       We&apos;ve sent a sign-in link to <strong>{userData.email.email}</strong>. Click the link in the email to access your account.

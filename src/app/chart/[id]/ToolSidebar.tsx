@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Tooltip,
   TooltipContent,
@@ -9,38 +9,44 @@ import { Button } from "@/components/ui/button";
 import {
   Type,
   Pencil,
-  ZoomIn,
-  Move,
   Sparkles,
   Settings,
   TrendingUp,
   MousePointer,
-  X
+  X,
 } from "lucide-react";
 import type { ChartTool } from "@/types/chart";
-import Logo from "@/app/_components/Logo/Logo";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import Logo from "@/app/_components/MainElements/Logo/Logo";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 interface ToolSidebarProps {
   updateCurrentTool: (tool: ChartTool) => void;
-  selectedTool: ChartTool;
+  selectedTool?: ChartTool;
 }
 
-const ToolSidebar: React.FC<ToolSidebarProps> = ({ updateCurrentTool, selectedTool }) => {
-    const [isAiAssistantOpen, setIsAiAssistantOpen] = useState<boolean>(false);
-      const [aiMessage, setAIMessage] = useState<string>('');
-  
+const ToolSidebar: React.FC<ToolSidebarProps> = ({
+  updateCurrentTool,
+  selectedTool,
+}) => {
+  const [isAiAssistantOpen, setIsAiAssistantOpen] = useState<boolean>(false);
+  const [aiMessage, setAIMessage] = useState<string>("");
+
+
   return (
     <div className="border-r border-gray-200 bg-white py-4 dark:border-gray-700 dark:bg-gray-800">
       <div className="flex w-16 flex-col items-center space-y-4">
         <Logo height={10} width={10} className="h-10 w-10" />
       </div>
-      <div className="flex w-16 flex-col items-center space-y-4 mt-12">
+      <div className="mt-12 flex w-16 flex-col items-center space-y-4">
         <TooltipProvider>
           <Tooltip>
-            <TooltipTrigger asChild>
+            <TooltipTrigger>
               <Button
-              className={`${selectedTool === "cursor" ? "bg-gray-200 dark:bg-gray-700" : ""}`}	
+                className={`${selectedTool === "cursor" ? "bg-gray-200 dark:bg-gray-700" : ""}`}
                 variant="ghost"
                 size="icon"
                 onClick={() => updateCurrentTool("cursor")}
@@ -55,7 +61,7 @@ const ToolSidebar: React.FC<ToolSidebarProps> = ({ updateCurrentTool, selectedTo
         </TooltipProvider>
         <TooltipProvider>
           <Tooltip>
-            <TooltipTrigger asChild>
+            <TooltipTrigger>
               <Button
                 className={`${selectedTool === "text" ? "bg-gray-200 dark:bg-gray-700" : ""}`}
                 variant="ghost"
@@ -72,12 +78,12 @@ const ToolSidebar: React.FC<ToolSidebarProps> = ({ updateCurrentTool, selectedTo
         </TooltipProvider>
         <TooltipProvider>
           <Tooltip>
-            <TooltipTrigger asChild>
+            <TooltipTrigger>
               <Button
-                className={`${selectedTool === "draw" ? "bg-gray-200 dark:bg-gray-700" : ""}`}	
+                className={`${selectedTool === "paint" ? "bg-gray-200 dark:bg-gray-700" : ""}`}
                 variant="ghost"
                 size="icon"
-                onClick={() => updateCurrentTool("draw")}
+                onClick={() => updateCurrentTool("paint")}
               >
                 <Pencil className="h-6 w-6" />
               </Button>
@@ -89,43 +95,9 @@ const ToolSidebar: React.FC<ToolSidebarProps> = ({ updateCurrentTool, selectedTo
         </TooltipProvider>
         <TooltipProvider>
           <Tooltip>
-            <TooltipTrigger asChild>
+            <TooltipTrigger>
               <Button
-              className={`${selectedTool === "zoom" ? "bg-gray-200 dark:bg-gray-700" : ""}`}
-                variant="ghost"
-                size="icon"
-                onClick={() => updateCurrentTool("zoom")}
-              >
-                <ZoomIn className="h-6 w-6" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent side="right">
-              <p>Zoom graph</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-              className={`${selectedTool === "move" ? "bg-gray-200 dark:bg-gray-700" : ""}`}
-                variant="ghost"
-                size="icon"
-                onClick={() => updateCurrentTool("move")}
-              >
-                <Move className="h-6 w-6" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent side="right">
-              <p>Move graph</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-              className={`${selectedTool === "trendline" ? "bg-gray-200 dark:bg-gray-700" : ""}`}
+                className={`${selectedTool === "trendline" ? "bg-gray-200 dark:bg-gray-700" : ""}`}
                 variant="ghost"
                 size="icon"
                 onClick={() => updateCurrentTool("trendline")}
@@ -140,50 +112,58 @@ const ToolSidebar: React.FC<ToolSidebarProps> = ({ updateCurrentTool, selectedTo
         </TooltipProvider>
         <TooltipProvider>
           <Tooltip>
-            <TooltipTrigger asChild>
-            <Popover open={isAiAssistantOpen} onOpenChange={setIsAiAssistantOpen}>
-            <PopoverTrigger asChild>
-              <Button
-              className={`${isAiAssistantOpen ? "bg-gray-200 dark:bg-gray-700" : ""}`}
-                variant="ghost"
-                size="icon"
+            <TooltipTrigger>
+              <Popover
+                open={isAiAssistantOpen}
+                onOpenChange={setIsAiAssistantOpen}
               >
-                <Sparkles className="h-6 w-6" />
-              </Button>
-              </PopoverTrigger>
-        <PopoverContent className="w-80" side="right" align="center">
-          <div className="space-y-4">
-            <h3 className="font-medium">AI Assistant</h3>
-            <div className="space-y-2">
-              {["Analyze performance", "Predict trends", "Compare assets", "Explain movements", "Suggest allocation"].map((snippet, index) => (
-                <Button
-                  key={index}
-                  variant="ghost"
-                  className="justify-start w-full"
-                  onClick={() => setAIMessage(snippet)}
-                >
-                  {snippet}
-                </Button>
-              ))}
-            </div>
-            {aiMessage && (
-              <div className="pt-4 border-t">
-                <p className="text-sm">{aiMessage}</p>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="mt-2"
-                  onClick={() => setAIMessage('')}
-                >
-                  <X className="mr-2 w-4 h-4" />
-                  Clear
-                </Button>
-              </div>
-            )}
-          </div>
-        </PopoverContent>
-      </Popover>
-
+                <PopoverTrigger asChild>
+                  <Button
+                    className={`${isAiAssistantOpen ? "bg-gray-200 dark:bg-gray-700" : ""}`}
+                    variant="ghost"
+                    size="icon"
+                  >
+                    <Sparkles className="h-6 w-6" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-80" side="right" align="center">
+                  <div className="space-y-4">
+                    <h3 className="font-medium">AI Assistant</h3>
+                    <div className="space-y-2">
+                      {[
+                        "Analyze performance",
+                        "Predict trends",
+                        "Compare assets",
+                        "Explain movements",
+                        "Suggest allocation",
+                      ].map((snippet, index) => (
+                        <Button
+                          key={index}
+                          variant="ghost"
+                          className="w-full justify-start"
+                          onClick={() => setAIMessage(snippet)}
+                        >
+                          {snippet}
+                        </Button>
+                      ))}
+                    </div>
+                    {aiMessage && (
+                      <div className="border-t pt-4">
+                        <p className="text-sm">{aiMessage}</p>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="mt-2"
+                          onClick={() => setAIMessage("")}
+                        >
+                          <X className="mr-2 h-4 w-4" />
+                          Clear
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                </PopoverContent>
+              </Popover>
             </TooltipTrigger>
             <TooltipContent side="right">
               <p>AI Assistant</p>
@@ -191,10 +171,10 @@ const ToolSidebar: React.FC<ToolSidebarProps> = ({ updateCurrentTool, selectedTo
           </Tooltip>
         </TooltipProvider>
       </div>
-      <div className=" flex w-16 flex-col items-center space-y-4 mt-56">
+      <div className="mt-56 flex w-16 flex-col items-center space-y-4">
         <TooltipProvider>
           <Tooltip>
-            <TooltipTrigger asChild>
+            <TooltipTrigger>
               <Button variant="ghost" size="icon">
                 <Settings className="h-6 w-6" />
               </Button>
@@ -210,3 +190,5 @@ const ToolSidebar: React.FC<ToolSidebarProps> = ({ updateCurrentTool, selectedTo
 };
 
 export default ToolSidebar;
+
+
