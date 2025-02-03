@@ -25,6 +25,112 @@ export const createContext = (): Context => ({
 const context = createContext();
 
 export const userRouter = createTRPCRouter({
+  getUserById: publicProcedure
+  .input(
+    z.object({
+      id: z.number(),
+    })
+  )
+  .query(async ({ input, ctx }) => {
+    return ctx.db.user.findUnique({
+      where: {
+        id: input.id,
+      },
+      select: {
+        id: true,
+        name: true,
+        tag: true,
+        bio: true,
+        country_abbrev: true,
+        isPrivate: true,
+        createdAt: true,
+        isSubscribed: true,
+        followers: {
+          select: {
+            follower: true,
+          },
+        },
+        following:{
+          select: {
+            followed: true,
+          }
+        }
+      },
+    });
+  }),
+  getUserTransactions: protectedProcedure.query(async ({ ctx }) => {
+
+      // Query withdraws and deposits separately
+      const [withdraws, deposits] = await Promise.all([
+        ctx.db.withdrawal.findMany({
+          where: {userId: ctx.session.user.id},
+        }),
+        ctx.db.deposit.findMany({
+          where: {userId: ctx.session.user.id},
+        }),
+
+      ]);
+      // Add add the type to each record
+  const normalizedWithdraws = withdraws.map((item) => ({
+    ...item,
+    type: "Withdraw",
+  }));
+
+  const normalizedDeposits = deposits.map((item) => ({
+    ...item,
+    type: "Deposit",
+  }));
+
+  // sort by date
+  const transactions = [...normalizedWithdraws, ...normalizedDeposits].sort(
+    (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+  );
+
+  return transactions;
+  }),
+  getUserActiveSubscription: protectedProcedure
+  .query(async ({ ctx }) => {
+    const user = await ctx.db.user.findUnique({
+      where: {
+        id: ctx.session.user.id,
+      },
+      include: {
+        subscriptions: {
+          where: {
+            status: "Active", 
+          },
+          include: {
+            plan: true,
+          },
+          take: 1,
+        },
+      },
+    });
+    return user?.subscriptions[0];
+  }),
+  changeUserNotificationSettings: protectedProcedure
+  .input(
+    z.object({
+      isTradeNotification: z.boolean(),
+    })
+  )
+  .mutation(async ({ ctx, input }) => {
+    const user = await ctx.db.user.update({
+      where: {
+        id: ctx.session.user.id,
+      },
+      data: {
+        isTradeNotification: input.isTradeNotification,
+      },
+    });
+
+    if (user) return { success: true };
+
+    throw new TRPCError({
+      code: "NOT_IMPLEMENTED",
+      message: "There was an error updating user notification settings",
+    });
+  }),
   uploadImage: protectedProcedure
   .input(
     z.object({
@@ -37,11 +143,6 @@ export const userRouter = createTRPCRouter({
     // define dir and path for the file
     const directoryPath = path.join(process.cwd(), 'public/image/user');
     const filePath = path.join(directoryPath, `${ctx.session.user.id}.webp`);
-
-    // // Ensure the directory exists (create it if it doesn't)
-    // if (!fs.existsSync(directoryPath)) {
-    //   fs.mkdirSync(directoryPath, { recursive: true });
-    // }
 
     // convert the  base64 into file the file (****replace if it already exists)
     const fileBuffer = Buffer.from(fileData, 'base64');
@@ -201,10 +302,6 @@ export const userRouter = createTRPCRouter({
         },
       },
     });
-    
-    
-    
-    
     console.log(info);
     return info;
   }),

@@ -13,12 +13,15 @@ interface HeaderSectionProps {
 }
 
 const HeaderSection: React.FC<HeaderSectionProps> = ({ user }) => {
+  // utils
   const [isFollowersModalOpen, setIsFollowersModalOpen] = useState(false);
   const [isFollowingModalOpen, setIsFollowingModalOpen] = useState(false);
 
   const openFollowersModal = () => setIsFollowersModalOpen(true);
   const openFollowingModal = () => setIsFollowingModalOpen(true);
 
+
+  // followers and following states
   const [followers, setFollowers] = useState<AccountFollower[]>([]);
   const [following, setFollowing] = useState<AccountFollower[]>([]);
 

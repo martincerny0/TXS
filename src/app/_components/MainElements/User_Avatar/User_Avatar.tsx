@@ -21,9 +21,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { signOut } from "next-auth/react";
 import type { User } from "next-auth";
+import type { UserAccount } from "@/types/user";
 
 interface UserAvatarProps {
-  user: User;
+  user: User | UserAccount;
   isDropdown?: boolean;
   classname?: string;
   isRedirect?: boolean;

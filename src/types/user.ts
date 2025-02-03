@@ -1,6 +1,8 @@
 import type { InvestingReason, InvestingExperience } from "@prisma/client";
 import type { Country } from "./country";
 import type { User } from "next-auth";
+import { inferRouterOutputs } from "@trpc/server";
+import { AppRouter } from "@/server/api/root";
 
 export interface AccountFollower {
     name: string;
@@ -45,3 +47,4 @@ export interface updateUserData {
     country_abbrev?: string;
 }
 
+export type UserAccount = NonNullable<inferRouterOutputs<AppRouter>["user"]["getUserById"]>;

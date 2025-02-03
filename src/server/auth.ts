@@ -20,11 +20,13 @@ declare module "next-auth" {
   export interface Session extends Omit<DefaultSession, "user"> {
     user: {
       id: number;
-      name: string; 
-      email: string; 
-      tag: string; 
-      isSubscribed: boolean; 
-      isNotification: boolean;
+      name: string;
+      email: string;
+      tag: string;
+      isSubscribed: boolean;
+      isTradeNotification: boolean;
+      country_abbrev: string;
+      bio: string;
     };
   }
 
@@ -34,7 +36,7 @@ declare module "next-auth" {
     email: string;
     tag: string;
     isSubscribed: boolean;
-    isNotification: boolean;
+    isTradeNotification: boolean;
     country_abbrev: string;
     bio: string;
   }
@@ -59,7 +61,7 @@ export const authOptions: NextAuthOptions = {
           email: user.email, 
           tag: user.tag,
           isSubscribed: user.isSubscribed,
-          isNotification: user.isNotification,
+          isTradeNotification: user.isTradeNotification,
           country_abbrev: user.country_abbrev,
           bio: user.bio,
         },

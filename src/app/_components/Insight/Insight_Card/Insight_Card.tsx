@@ -35,7 +35,7 @@ const InsightCard: React.FC<InsightCardProps> = ({ insight, user }) => {
   return (
     <RedirectCard
       href={`/insight/${insight.id}`}
-      className="flex transform flex-col overflow-hidden bg-white transition-all duration-300 ease-in-out hover:scale-[1.02] hover:shadow-md dark:bg-gray-800"
+      className="flex transform flex-col overflow-hidden bg-white  duration-300  hover:scale-[1.02] hover:shadow-md dark:bg-gray-800 hover:cursor-pointer"
     >
       <CardHeader className="p-0">
         <div className="relative">
@@ -46,7 +46,6 @@ const InsightCard: React.FC<InsightCardProps> = ({ insight, user }) => {
             alt={"Thubmnail of the insight"}
             className="h-48 w-full object-cover"
           />
-          <div className="h-48 w-72"></div>
           <div
             className={`absolute left-0 top-0 bg-gradient-to-r ${tagColors[insight.tag]} z-10 px-2 py-1 text-xs font-semibold text-white`}
           >

@@ -87,6 +87,7 @@ model User {
   emailVerified        DateTime?
   isTradeNotification  Boolean         @default(true)
   isSubscribed        Boolean         @default(false)
+  isPrivate            Boolean         @default(false)
   investingReason      InvestingReason?
   investingExperience  InvestingExperience?
   customerId           String?         @db.VarChar(255)
